@@ -274,6 +274,7 @@
         
         <div class="functions">
             <h2>Core Functions</h2>
+            <p style="text-align: center; margin-bottom: 1.5rem; color: #888;">📖 <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/blob/main/EIPs/ERC-6551A/docs/BIND-UNBIND-FLOW.md" style="color: #667eea;">Bind/Unbind Guide</a> • <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/blob/main/EIPs/ERC-6551A/docs/CLONE-LIFECYCLE.md" style="color: #667eea;">Clone Guide</a></p>
             <div class="func-grid">
                 <div class="func-card">
                     <h4>bindNew()</h4>
@@ -334,7 +335,7 @@
                 
                 <div class="tool-card">
                     <h3>🔍 Lookup Agent</h3>
-                    <p class="tool-desc">Check if an NFT has an agent bound</p>
+                    <p class="tool-desc">Check if an NFT has an agent bound. <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs/ERC-6551A" style="color: #4ecdc4;">📖 Spec</a></p>
                     <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input">
                     <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input">
                     <button id="lookupBtn" class="tool-btn">Lookup</button>
@@ -342,13 +343,14 @@
                 </div>
                 
                 <div class="tool-card">
-                    <h3>🔗 Bind Agent</h3>
-                    <p class="tool-desc">Make your NFT AI-native</p>
+                    <h3>🔗 Bind New Agent</h3>
+                    <p class="tool-desc">Make your NFT AI-native. <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/blob/main/EIPs/ERC-6551A/docs/BIND-UNBIND-FLOW.md" style="color: #4ecdc4;">📖 Guide</a></p>
                     <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
                     <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
                     <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
-                    <button id="bindBtn" class="tool-btn" disabled>Bind (Connect Wallet)</button>
+                    <button id="bindBtn" class="tool-btn" disabled>Bind New (Connect Wallet)</button>
                     <div id="bindResult" class="tool-result"></div>
+                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #888;">After binding: Configure your agent to use this NFT as identity. See <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/blob/main/EIPs/ERC-6551A/docs/BIND-UNBIND-FLOW.md#after-binding" style="color: #667eea;">setup guide</a>.</p>
                 </div>
             </div>
         </div>
