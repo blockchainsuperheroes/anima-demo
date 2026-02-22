@@ -88,6 +88,8 @@
         }
         .flow-card.clone { border-color: #4ecdc4; }
         .flow-card.transfer { border-color: #f5576c; }
+        .flow-card.migration { border-color: #f5a623; }
+        .comparison.three-col { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
         
         .flow-card h2 {
             display: flex;
@@ -122,6 +124,7 @@
             flex-shrink: 0;
         }
         .flow-card.transfer .step-num { background: #f5576c; }
+        .flow-card.migration .step-num { background: #f5a623; }
         .step-content h4 { margin-bottom: 0.25rem; }
         .step-content p { font-size: 0.85rem; color: #aaa; }
         
@@ -135,6 +138,8 @@
             color: #4ecdc4;
         }
         .flow-card.transfer .result-box h4 { color: #f5576c; }
+        .flow-card.migration .result-box h4 { color: #f5a623; }
+        .flow-card.migration .result-box li::before { color: #f5a623; }
         .result-box ul {
             list-style: none;
             font-size: 0.9rem;
@@ -320,6 +325,7 @@
             font-size: 0.9rem;
         }
         .flow-card.transfer .state-table h4 { color: #f5576c; }
+        .flow-card.migration .state-table h4 { color: #f5a623; }
         .state-table table {
             width: 100%;
             border-collapse: collapse;
@@ -375,7 +381,7 @@
             <p class="registry-note">TBA = Token-Bound Account. Each tokenId deterministically derives a unique wallet address. The agent controls this wallet.</p>
         </div>
         
-        <div class="comparison">
+        <div class="comparison three-col">
             <div class="flow-card clone">
                 <h2>🧬 clone() — Commerce</h2>
                 <p class="tagline">Like Star Wars clones: same template, new individual</p>
@@ -495,6 +501,66 @@
                         <tr><td>Certs</td><td>L3</td><td>L3 (same - follows token)</td></tr>
                         <tr><td>Memory</td><td>Full</td><td>Full minus EOA keys</td></tr>
                         <tr><td>Owner</td><td>0xOLD</td><td>0xNEW</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="flow-card migration">
+                <h2>💾 migration_backup() — Device Change</h2>
+                <p class="tagline">Same agent, new machine (shutdown old first!)</p>
+                
+                <div class="flow-steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Shutdown Old Instance</h4>
+                            <p>CRITICAL: Stop old agent before migration</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Create migration_backup()</h4>
+                            <p>Includes EOA key (one-time use only)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Restore on New Device</h4>
+                            <p>Agent resumes with same identity</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Delete Migration Backup</h4>
+                            <p>Remove EOA-containing backup immediately</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h4>Result</h4>
+                    <ul>
+                        <li>Same token ID</li>
+                        <li>EOA: SAME (migrated)</li>
+                        <li>TBA: SAME</li>
+                        <li>Certs: SAME</li>
+                        <li>Memory: SAME</li>
+                        <li>Owner: SAME</li>
+                        <li>⚠️ NEVER run two instances with same EOA</li>
+                    </ul>
+                </div>
+                
+                <div class="state-table">
+                    <h4>State Change</h4>
+                    <table>
+                        <tr><th></th><th>Old Device</th><th>New Device</th></tr>
+                        <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (shutdown)</td><td>0xAAA (migrated)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td></tr>
+                        <tr><td>Instance</td><td>STOPPED</td><td>RUNNING</td></tr>
                     </table>
                 </div>
             </div>
