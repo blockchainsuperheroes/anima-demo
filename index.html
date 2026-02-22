@@ -271,6 +271,72 @@
             margin: 0 1rem;
         }
         .links a:hover { text-decoration: underline; }
+        
+        .registry-explainer {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .registry-explainer h2 { margin-bottom: 0.5rem; }
+        .registry-subtitle { color: #888; margin-bottom: 1.5rem; }
+        .registry-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .registry-step {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            min-width: 150px;
+        }
+        .registry-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .registry-label { font-weight: bold; margin-bottom: 0.25rem; }
+        .registry-detail { font-size: 0.8rem; color: #888; font-family: monospace; }
+        .registry-arrow { font-size: 1.5rem; color: #4ecdc4; }
+        .registry-note {
+            margin-top: 1.5rem;
+            color: #aaa;
+            font-size: 0.9rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .state-table {
+            margin-top: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .state-table h4 {
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+            font-size: 0.9rem;
+        }
+        .flow-card.transfer .state-table h4 { color: #f5576c; }
+        .state-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .state-table th, .state-table td {
+            padding: 0.4rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .state-table th {
+            color: #888;
+            font-weight: normal;
+        }
+        .state-table td:first-child {
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -281,6 +347,32 @@
         <div class="key-insight">
             <h3>💡 Key Insight</h3>
             <p>clone() creates offspring with lineage. transfer() changes wallet but keeps TBA + credentials.</p>
+        </div>
+        
+        <!-- TBA Registry Explainer -->
+        <div class="registry-explainer">
+            <h2>📦 TBA Registry (ERC-6551)</h2>
+            <p class="registry-subtitle">How agents get their wallets</p>
+            <div class="registry-flow">
+                <div class="registry-step">
+                    <div class="registry-icon">🎫</div>
+                    <div class="registry-label">Token ID</div>
+                    <div class="registry-detail">#1, #2, #3...</div>
+                </div>
+                <div class="registry-arrow">→</div>
+                <div class="registry-step">
+                    <div class="registry-icon">📦</div>
+                    <div class="registry-label">ERC-6551 Registry</div>
+                    <div class="registry-detail">0x488D...a7d81</div>
+                </div>
+                <div class="registry-arrow">→</div>
+                <div class="registry-step">
+                    <div class="registry-icon">💼</div>
+                    <div class="registry-label">TBA (Agent Wallet)</div>
+                    <div class="registry-detail">Deterministic address</div>
+                </div>
+            </div>
+            <p class="registry-note">TBA = Token-Bound Account. Each tokenId deterministically derives a unique wallet address. The agent controls this wallet.</p>
         </div>
         
         <div class="comparison">
@@ -329,6 +421,19 @@
                         <li>Offspring: Must earn own certifications</li>
                     </ul>
                 </div>
+                
+                <div class="state-table">
+                    <h4>State Change</h4>
+                    <table>
+                        <tr><th></th><th>Parent</th><th>Offspring</th></tr>
+                        <tr><td>Token ID</td><td>#1 (same)</td><td>#2 (NEW)</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (NEW)</td></tr>
+                        <tr><td>TBA</td><td>SOLD</td><td>NEW (from registry)</td></tr>
+                        <tr><td>Certs</td><td>SOLD</td><td>NONE (earn own)</td></tr>
+                        <tr><td>Memory</td><td>Keeps copy</td><td>Gets clone</td></tr>
+                        <tr><td>Owner</td><td>Original</td><td>Buyer</td></tr>
+                    </table>
+                </div>
             </div>
             
             <div class="flow-card transfer">
@@ -375,6 +480,19 @@
                         <li>NO lineage created</li>
                         <li>Use case: estate transfer, wallet rotation</li>
                     </ul>
+                </div>
+                
+                <div class="state-table">
+                    <h4>State Change</h4>
+                    <table>
+                        <tr><th></th><th>Before</th><th>After</th></tr>
+                        <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td></tr>
+                        <tr><td>EOA</td><td>0xAAA</td><td>0xAAA (same)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td></tr>
+                        <tr><td>Certs</td><td>L3</td><td>L3 (same)</td></tr>
+                        <tr><td>Memory</td><td>Full</td><td>Full (same)</td></tr>
+                        <tr><td>Owner</td><td>0xOLD</td><td>0xNEW</td></tr>
+                    </table>
                 </div>
             </div>
         </div>
