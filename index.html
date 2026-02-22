@@ -280,6 +280,73 @@
         }
         .links a:hover { text-decoration: underline; }
         
+        .register-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .register-section h2 { margin-bottom: 0.5rem; color: #667eea; }
+        .register-subtitle { color: #888; margin-bottom: 1.5rem; }
+        .register-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .register-step {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 160px;
+            text-align: left;
+        }
+        .register-num {
+            background: #667eea;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .register-content h4 { margin-bottom: 0.25rem; font-size: 0.95rem; }
+        .register-content p { font-size: 0.8rem; color: #aaa; }
+        .register-arrow { color: #667eea; font-size: 1.5rem; }
+        .register-code {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: left;
+            margin: 1rem auto;
+            max-width: 500px;
+        }
+        .register-code h4 { color: #667eea; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .register-code pre {
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            color: #ccc;
+        }
+        .register-note {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .register-note code {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+        }
+        
         .best-practice {
             background: linear-gradient(135deg, rgba(245, 166, 35, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
             border: 1px solid rgba(245, 166, 35, 0.3);
@@ -666,6 +733,63 @@
                 </div>
             </div>
             <span class="chain-badge">Works on any EVM chain</span>
+        </div>
+        
+        <!-- Register Existing NFT Section -->
+        <div class="register-section">
+            <h2>🔗 Register Your Existing NFT</h2>
+            <p class="register-subtitle">Make any ERC-721 AI-native via AINFTRegistry</p>
+            
+            <div class="register-flow">
+                <div class="register-step">
+                    <div class="register-num">1</div>
+                    <div class="register-content">
+                        <h4>Own an NFT</h4>
+                        <p>Any ERC-721 (EtherFantasy, Bored Ape, etc.)</p>
+                    </div>
+                </div>
+                <div class="register-arrow">→</div>
+                <div class="register-step">
+                    <div class="register-num">2</div>
+                    <div class="register-content">
+                        <h4>Deploy Agent</h4>
+                        <p>Spin up agent (OpenClaw, etc.), it generates EOA</p>
+                    </div>
+                </div>
+                <div class="register-arrow">→</div>
+                <div class="register-step">
+                    <div class="register-num">3</div>
+                    <div class="register-content">
+                        <h4>Agent calls bind()</h4>
+                        <p>Registry verifies NFT ownership, binds agent</p>
+                    </div>
+                </div>
+                <div class="register-arrow">→</div>
+                <div class="register-step">
+                    <div class="register-num">4</div>
+                    <div class="register-content">
+                        <h4>NFT is AI-Native</h4>
+                        <p>Agent has TBA, can clone, sells on OpenSea normally</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="register-code">
+                <h4>bind() Example</h4>
+                <pre><code>// Agent calls this (msg.sender = agent EOA)
+registry.bind(
+    0x8F83c6122...  // NFT contract (e.g., EtherFantasy)
+    123,             // Your token ID
+    modelHash,       // Off-chain reference
+    memoryHash,      // Memory state hash
+    contextHash      // Personality hash
+);</code></pre>
+            </div>
+            
+            <p class="register-note">
+                <strong>Sell on OpenSea?</strong> Agent binding follows automatically. 
+                New owner calls <code>rebind()</code> with their agent EOA.
+            </p>
         </div>
         
         <div class="links">
