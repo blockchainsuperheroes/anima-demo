@@ -277,6 +277,23 @@
         }
         .links a:hover { text-decoration: underline; }
         
+        .best-practice {
+            background: linear-gradient(135deg, rgba(245, 166, 35, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            border: 1px solid rgba(245, 166, 35, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .best-practice h3 {
+            color: #f5a623;
+            margin-bottom: 0.5rem;
+        }
+        .best-practice p {
+            color: #ccc;
+            margin: 0.25rem 0;
+        }
+        
         .registry-explainer {
             background: rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -353,6 +370,12 @@
         <div class="key-insight">
             <h3>💡 Key Insight</h3>
             <p>clone() creates offspring with lineage. transfer() changes wallet but keeps TBA + credentials.</p>
+        </div>
+        
+        <div class="best-practice">
+            <h3>⚡ Best Practice: One Agent = One AINFT</h3>
+            <p>Recommended: Each agent binds to exactly one AINFT.</p>
+            <p>If an agent holds multiple AINFTs, maintain <strong>separate EOAs</strong> for each identity.</p>
         </div>
         
         <!-- TBA Registry Explainer -->
