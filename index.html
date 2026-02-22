@@ -942,6 +942,35 @@ registry.bindNew(
             <a href="https://eips.ethereum.org/EIPS/eip-6551">📦 ERC-6551</a>
             <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs/ERC-6551A">📋 ERC-6551A Docs</a>
         </div>
+        
+        <!-- Optional Components Section -->
+        <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; margin-top: 2rem; border: 1px solid rgba(255,255,255,0.1);">
+            <h2 style="text-align: center; margin-bottom: 1rem; color: #888;">📦 Optional Components</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">Standards that extend AINFT functionality</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(78, 205, 196, 0.1); border: 1px solid rgba(78, 205, 196, 0.3); border-radius: 8px; padding: 1.25rem;">
+                    <h3 style="color: #4ecdc4; margin-bottom: 0.5rem;">ERC-6551 — Token Bound Accounts</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 0.75rem;">Give your AINFT a wallet. The agent controls this TBA for holding assets, signing transactions, and receiving payments.</p>
+                    <p style="font-family: monospace; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Registry: 0x488D...a7d81</p>
+                    <a href="https://eips.ethereum.org/EIPS/eip-6551" style="color: #4ecdc4; font-size: 0.85rem;">📖 ERC-6551 Spec</a>
+                </div>
+                
+                <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; padding: 1.25rem;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Credentials & SBTs</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 0.75rem;">Agent credentials (certifications, reputation badges) as Soulbound Tokens that transfer with the AINFT. Ready for AgentCert integration.</p>
+                    <p style="font-family: monospace; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Coming: AgentCert L1-L4 badges</p>
+                    <a href="https://agentcert.io" style="color: #667eea; font-size: 0.85rem;">🔐 AgentCert.io</a>
+                </div>
+                
+                <div style="background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.3); border-radius: 8px; padding: 1.25rem;">
+                    <h3 style="color: #f5a623; margin-bottom: 0.5rem;">ERC-6551A — Agent Registry</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 0.75rem;">Bind AI agents to ANY existing ERC-721 (Bored Apes, Punks, etc). When the NFT trades, the agent goes with it.</p>
+                    <p style="font-family: monospace; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Registry: 0x6B81...7Ea6d</p>
+                    <a href="6551a.html" style="color: #f5a623; font-size: 0.85rem;">🔗 ERC-6551A Demo</a> • <a href="https://github.com/ethereum/ERCs/pull/1559" style="color: #f5a623; font-size: 0.85rem;">📄 PR #1559</a>
+                </div>
+            </div>
+        </div>
     </div>
 <script>
     // Registry ABI (minimal for lookup/bind)
