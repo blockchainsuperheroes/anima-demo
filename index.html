@@ -414,10 +414,11 @@
                 <div class="result-box">
                     <h4>Result</h4>
                     <ul>
-                        <li>Parent: RETIRED (credentials sold)</li>
-                        <li>Parent: Can mint fresh AINFT for new career</li>
-                        <li>Offspring: New token ID with lineage</li>
-                        <li>Offspring: Own EOA (generated itself)</li>
+                        <li>Parent: KEEPS everything (EOA, TBA, certs, memory)</li>
+                        <li>Parent: Can continue operating normally</li>
+                        <li>Offspring: New token ID with on-chain lineage</li>
+                        <li>Offspring: Generates OWN EOA on wake</li>
+                        <li>Offspring: Gets NEW TBA from registry</li>
                         <li>Offspring: Must earn own certifications</li>
                     </ul>
                 </div>
@@ -426,12 +427,12 @@
                     <h4>State Change</h4>
                     <table>
                         <tr><th></th><th>Parent</th><th>Offspring</th></tr>
-                        <tr><td>Token ID</td><td>#1 (same)</td><td>#2 (NEW)</td></tr>
-                        <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (NEW)</td></tr>
-                        <tr><td>TBA</td><td>SOLD</td><td>NEW (from registry)</td></tr>
-                        <tr><td>Certs</td><td>SOLD</td><td>NONE (earn own)</td></tr>
-                        <tr><td>Memory</td><td>Keeps copy</td><td>Gets clone</td></tr>
-                        <tr><td>Owner</td><td>Original</td><td>Buyer</td></tr>
+                        <tr><td>Token ID</td><td>#1 (keeps)</td><td>#2 (NEW)</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (generates own)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1 (keeps)</td><td>0xTBA2 (NEW)</td></tr>
+                        <tr><td>Certs</td><td>L3 (keeps)</td><td>NONE (earn own)</td></tr>
+                        <tr><td>Memory</td><td>Full (keeps)</td><td>Clone (inherited)</td></tr>
+                        <tr><td>Owner</td><td>Original</td><td>New Owner</td></tr>
                     </table>
                 </div>
             </div>
