@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERC-6551A (Proposed): Token Bound Account (Agent Registry)</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 0.5rem; font-size: 2.2rem; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 0.5rem; }
+        .pr-link { text-align: center; margin-bottom: 2rem; }
+        .pr-link a { color: #667eea; text-decoration: none; font-size: 1rem; margin: 0 0.5rem; }
+        .pr-link a:hover { text-decoration: underline; }
+        
+        .hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .hero h2 { color: #667eea; margin-bottom: 1rem; }
+        .hero p { color: #aaa; margin-bottom: 1rem; }
+        .hero code { background: rgba(0,0,0,0.3); padding: 0.5rem 1rem; border-radius: 6px; display: inline-block; }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .compare-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .compare-card h3 { margin-bottom: 0.5rem; }
+        .compare-card.erc6551 { border-color: #4ecdc4; }
+        .compare-card.erc6551 h3 { color: #4ecdc4; }
+        .compare-card.erc6551a { border-color: #667eea; }
+        .compare-card.erc6551a h3 { color: #667eea; }
+        .compare-card p { color: #aaa; font-size: 0.9rem; }
+        
+        .functions {
+            margin-bottom: 2rem;
+        }
+        .functions h2 { text-align: center; margin-bottom: 1.5rem; color: #667eea; }
+        .func-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .func-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1.25rem;
+            border-left: 3px solid #667eea;
+        }
+        .func-card h4 { color: #fff; margin-bottom: 0.5rem; font-family: monospace; }
+        .func-card p { color: #aaa; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .func-card .arrow { color: #667eea; font-size: 0.85rem; }
+        
+        .flow-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .flow-section h2 { text-align: center; margin-bottom: 1.5rem; }
+        .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .flow-box {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid #667eea;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            min-width: 150px;
+        }
+        .flow-box.limbo { background: rgba(245, 166, 35, 0.2); border-color: #f5a623; }
+        .flow-box.nft { background: rgba(78, 205, 196, 0.2); border-color: #4ecdc4; }
+        .flow-arrow { color: #667eea; font-size: 1.5rem; }
+        
+        .tools-section {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tools-section h2 { text-align: center; margin-bottom: 1.5rem; color: #4ecdc4; }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .tool-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .tool-card h3 { margin-bottom: 0.5rem; color: #fff; }
+        .tool-desc { color: #888; font-size: 0.85rem; margin-bottom: 1rem; }
+        .tool-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        .tool-input::placeholder { color: #666; }
+        .tool-input:focus { outline: none; border-color: #4ecdc4; }
+        .tool-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            background: #4ecdc4;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tool-btn:hover { background: #3dbdb5; }
+        .tool-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .tool-result {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            display: none;
+        }
+        .tool-result.show { display: block; }
+        .tool-result.success { border-left: 3px solid #4ecdc4; }
+        .tool-result.error { border-left: 3px solid #ff6b6b; }
+        .wallet-info {
+            margin-top: 0.75rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #4ecdc4;
+        }
+        
+        .contract-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+        .contract-info code {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #667eea;
+        }
+        .chain-badge {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(78, 205, 196, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #4ecdc4;
+        }
+        
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #667eea;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        .links a:hover { background: rgba(102, 126, 234, 0.2); }
+        .links a.primary { background: #667eea; color: #fff; }
+        .links a.primary:hover { background: #5568d3; }
+        
+        .see-also {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+        .see-also a { color: #4ecdc4; }
+        
+        @media (max-width: 600px) {
+            .comparison { grid-template-columns: 1fr; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ERC-6551A (Proposed)</h1>
+        <p class="subtitle">Token Bound Account (Agent Registry)</p>
+        <div class="pr-link">
+            <a href="https://github.com/ethereum/ERCs/pull/1559">📄 PR #1559</a>
+            <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs/ERC-6551A">💻 Specification</a>
+        </div>
+        
+        <div class="hero">
+            <h2>Make ANY ERC-721 AI-Native</h2>
+            <p>Just as ERC-6551 gives any NFT a wallet, ERC-6551A gives any NFT an AI agent.</p>
+            <code>Any NFT + Agent Registry = AI-Native NFT</code>
+        </div>
+        
+        <div class="comparison">
+            <div class="compare-card erc6551">
+                <h3>ERC-6551</h3>
+                <p>Token Bound Account (Wallet Registry)</p>
+                <p>→ Any NFT gets a <strong>wallet</strong></p>
+            </div>
+            <div class="compare-card erc6551a">
+                <h3>ERC-6551A</h3>
+                <p>Token Bound Account (Agent Registry)</p>
+                <p>→ Any NFT gets an <strong>AI agent</strong></p>
+            </div>
+        </div>
+        
+        <div class="functions">
+            <h2>Core Functions</h2>
+            <div class="func-grid">
+                <div class="func-card">
+                    <h4>bindNew()</h4>
+                    <p>Create fresh agent identity, bind to NFT</p>
+                    <span class="arrow">Agent + NFT → Bound</span>
+                </div>
+                <div class="func-card">
+                    <h4>bindExisting()</h4>
+                    <p>Take agent from limbo, bind to NFT</p>
+                    <span class="arrow">Limbo + NFT → Bound</span>
+                </div>
+                <div class="func-card">
+                    <h4>unbind()</h4>
+                    <p>Detach agent from NFT, preserve data</p>
+                    <span class="arrow">Bound → Limbo (data preserved)</span>
+                </div>
+                <div class="func-card">
+                    <h4>clone()</h4>
+                    <p>Create agent copy in limbo</p>
+                    <span class="arrow">Bound → New clone in Limbo</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-section">
+            <h2>Agent Lifecycle</h2>
+            <div class="flow-diagram">
+                <div class="flow-box nft">Your NFT<br><small>(Bored Ape, etc.)</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">bindNew()</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box" style="background: rgba(102, 126, 234, 0.3);">Bound<br><small>(AI-Native)</small></div>
+            </div>
+            <div class="flow-diagram">
+                <div class="flow-box" style="background: rgba(102, 126, 234, 0.3);">Bound</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">unbind()</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box limbo">Limbo<br><small>(data preserved)</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">bindExisting()</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box nft">Different NFT</div>
+            </div>
+            <p style="text-align: center; color: #888; margin-top: 1rem;">
+                <strong>Limbo sources:</strong> unbind() (detached agent) or clone() (new copy)
+            </p>
+        </div>
+        
+        <div class="tools-section">
+            <h2>🛠️ Registry Tools</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>👛 Wallet</h3>
+                    <button id="connectBtn" class="tool-btn">Connect Wallet</button>
+                    <div id="walletInfo" class="wallet-info"></div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🔍 Lookup Agent</h3>
+                    <p class="tool-desc">Check if an NFT has an agent bound</p>
+                    <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                    <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input">
+                    <button id="lookupBtn" class="tool-btn">Lookup</button>
+                    <div id="lookupResult" class="tool-result"></div>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🔗 Bind Agent</h3>
+                    <p class="tool-desc">Make your NFT AI-native</p>
+                    <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                    <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
+                    <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
+                    <button id="bindBtn" class="tool-btn" disabled>Bind (Connect Wallet)</button>
+                    <div id="bindResult" class="tool-result"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contract-info">
+            <h3>📋 Live Registry</h3>
+            <p><code>0x6B81e00508E3C449E20255CdFb85A0541457Ea6d</code></p>
+            <span class="chain-badge">Pentagon Chain (3344)</span>
+        </div>
+        
+        <div class="links">
+            <a href="https://github.com/ethereum/ERCs/pull/1559" class="primary">📄 ERC PR #1559</a>
+            <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs/ERC-6551A">💻 Full Specification</a>
+            <a href="https://eips.ethereum.org/EIPS/eip-6551">📦 ERC-6551 (Wallets)</a>
+        </div>
+        
+        <div class="see-also">
+            <p>See also: <a href="index.html">ERC-AINFT</a> — Standalone AI-Native NFT Standard (PR #1558)</p>
+        </div>
+    </div>
+    
+    <script>
+        const PENTAGON_CHAIN = {
+            chainId: '0xd10',
+            chainName: 'Pentagon Chain',
+            rpcUrls: ['https://rpc.pentagon.games'],
+            blockExplorerUrls: ['https://explorer.pentagon.games'],
+            nativeCurrency: { name: 'PC', symbol: 'PC', decimals: 18 }
+        };
+        
+        const REGISTRY_ADDRESS = '0x6B81e00508E3C449E20255CdFb85A0541457Ea6d';
+        
+        let userAddress = null;
+        
+        document.getElementById('connectBtn').addEventListener('click', async () => {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask or another Web3 wallet');
+                return;
+            }
+            
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                userAddress = accounts[0];
+                
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: PENTAGON_CHAIN.chainId }]
+                    });
+                } catch (switchError) {
+                    if (switchError.code === 4902) {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [PENTAGON_CHAIN]
+                        });
+                    }
+                }
+                
+                document.getElementById('connectBtn').textContent = 'Connected';
+                document.getElementById('connectBtn').disabled = true;
+                document.getElementById('walletInfo').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+                document.getElementById('bindBtn').disabled = false;
+                document.getElementById('bindBtn').textContent = 'Bind Agent';
+                
+            } catch (error) {
+                console.error(error);
+                alert('Failed to connect: ' + error.message);
+            }
+        });
+        
+        document.getElementById('lookupBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('lookupResult');
+            const contract = document.getElementById('lookupContract').value.trim();
+            const tokenId = document.getElementById('lookupTokenId').value.trim();
+            
+            if (!contract || !tokenId) {
+                resultDiv.textContent = 'Please enter contract address and token ID';
+                resultDiv.className = 'tool-result show error';
+                return;
+            }
+            
+            resultDiv.textContent = 'Looking up... (Connect ethers.js for live queries)';
+            resultDiv.className = 'tool-result show';
+        });
+        
+        document.getElementById('bindBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('bindResult');
+            resultDiv.textContent = 'Binding... (Connect ethers.js for live transactions)';
+            resultDiv.className = 'tool-result show';
+        });
+    </script>
+</body>
+</html>
