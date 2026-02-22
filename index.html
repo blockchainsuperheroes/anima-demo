@@ -347,6 +347,90 @@
             border-radius: 4px;
         }
         
+        .tools-section {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tools-section h2 { text-align: center; margin-bottom: 1.5rem; color: #4ecdc4; }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .tool-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .tool-card h3 { margin-bottom: 0.5rem; color: #fff; }
+        .tool-desc { color: #888; font-size: 0.85rem; margin-bottom: 1rem; }
+        .tool-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        .tool-input::placeholder { color: #666; }
+        .tool-input:focus { outline: none; border-color: #4ecdc4; }
+        .tool-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            background: #4ecdc4;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tool-btn:hover { background: #3dbdb5; }
+        .tool-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .tool-result {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            display: none;
+        }
+        .tool-result.show { display: block; }
+        .tool-result.success { border-left: 3px solid #4ecdc4; }
+        .tool-result.error { border-left: 3px solid #ff6b6b; }
+        .wallet-info {
+            margin-top: 0.75rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #4ecdc4;
+        }
+        .network-info {
+            text-align: center;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .network-badge {
+            background: rgba(78, 205, 196, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #4ecdc4;
+        }
+        .network-note { color: #888; font-size: 0.85rem; }
+        .network-note code { color: #4ecdc4; }
+        
         .best-practice {
             background: linear-gradient(135deg, rgba(245, 166, 35, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
             border: 1px solid rgba(245, 166, 35, 0.3);
@@ -792,11 +876,218 @@ registry.bind(
             </p>
         </div>
         
+        <!-- Interactive Tools Section -->
+        <div class="tools-section">
+            <h2>🛠️ Registry Tools</h2>
+            
+            <div class="tools-grid">
+                <!-- Wallet Connect -->
+                <div class="tool-card">
+                    <h3>👛 Wallet</h3>
+                    <button id="connectBtn" class="tool-btn">Connect Wallet</button>
+                    <div id="walletInfo" class="wallet-info"></div>
+                </div>
+                
+                <!-- Lookup Agent -->
+                <div class="tool-card">
+                    <h3>🔍 Lookup Agent</h3>
+                    <p class="tool-desc">Check if an NFT has an agent bound</p>
+                    <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                    <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input">
+                    <button id="lookupBtn" class="tool-btn">Lookup</button>
+                    <div id="lookupResult" class="tool-result"></div>
+                </div>
+                
+                <!-- Bind Agent -->
+                <div class="tool-card">
+                    <h3>🔗 Bind Agent</h3>
+                    <p class="tool-desc">Make your NFT AI-native (owner signs)</p>
+                    <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                    <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
+                    <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
+                    <button id="bindBtn" class="tool-btn" disabled>Bind (Connect Wallet First)</button>
+                    <div id="bindResult" class="tool-result"></div>
+                </div>
+            </div>
+            
+            <div class="network-info">
+                <span class="network-badge">Pentagon Chain (3344)</span>
+                <span class="network-note">Registry: <code id="registryAddr">Not deployed yet</code></span>
+            </div>
+        </div>
+        
         <div class="links">
             <a href="https://github.com/ethereum/ERCs/pull/1558">📄 ERC PR #1558</a>
             <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs">💻 Specification & Contracts</a>
             <a href="https://eips.ethereum.org/EIPS/eip-6551">📦 ERC-6551</a>
         </div>
     </div>
+<script>
+    // Registry ABI (minimal for lookup/bind)
+    const REGISTRY_ABI = [
+        "function getAgent(address nftContract, uint256 tokenId) view returns (tuple(address agentEOA, bytes32 modelHash, bytes32 memoryHash, bytes32 contextHash, uint256 generation, bytes32 parentKey, string storageURI, uint256 registeredAt))",
+        "function isRegistered(address nftContract, uint256 tokenId) view returns (bool)",
+        "function bindWithApproval(address nftContract, uint256 tokenId, address agentEOA, bytes32 modelHash, bytes32 memoryHash, bytes32 contextHash, string storageURI)"
+    ];
+    
+    // Pentagon Chain config
+    const PENTAGON_CHAIN = {
+        chainId: '0xd10', // 3344
+        chainName: 'Pentagon Chain',
+        rpcUrls: ['https://rpc.pentagon.games'],
+        blockExplorerUrls: ['https://explorer.pentagon.games'],
+        nativeCurrency: { name: 'PC', symbol: 'PC', decimals: 18 }
+    };
+    
+    // Registry address (update after deployment)
+    const REGISTRY_ADDRESS = null; // TODO: Deploy and update
+    
+    let provider = null;
+    let signer = null;
+    let userAddress = null;
+    
+    // Connect wallet
+    document.getElementById('connectBtn').addEventListener('click', async () => {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask or another Web3 wallet');
+            return;
+        }
+        
+        try {
+            // Request accounts
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            userAddress = accounts[0];
+            
+            // Try to switch to Pentagon Chain
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: PENTAGON_CHAIN.chainId }]
+                });
+            } catch (switchError) {
+                // Chain not added, add it
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [PENTAGON_CHAIN]
+                    });
+                }
+            }
+            
+            // Update UI
+            document.getElementById('connectBtn').textContent = 'Connected';
+            document.getElementById('connectBtn').disabled = true;
+            document.getElementById('walletInfo').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+            document.getElementById('bindBtn').disabled = !REGISTRY_ADDRESS;
+            document.getElementById('bindBtn').textContent = REGISTRY_ADDRESS ? 'Bind Agent' : 'Registry Not Deployed';
+            
+        } catch (error) {
+            console.error(error);
+            alert('Failed to connect: ' + error.message);
+        }
+    });
+    
+    // Lookup agent
+    document.getElementById('lookupBtn').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('lookupResult');
+        const contract = document.getElementById('lookupContract').value.trim();
+        const tokenId = document.getElementById('lookupTokenId').value.trim();
+        
+        if (!contract || !tokenId) {
+            resultDiv.textContent = 'Please enter contract address and token ID';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        if (!REGISTRY_ADDRESS) {
+            resultDiv.textContent = 'Registry not deployed yet. Coming soon!';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        try {
+            resultDiv.textContent = 'Looking up...';
+            resultDiv.className = 'tool-result show';
+            
+            // Use ethers via CDN or native fetch to RPC
+            const data = await callRegistry('isRegistered', [contract, tokenId]);
+            
+            if (data) {
+                const agent = await callRegistry('getAgent', [contract, tokenId]);
+                resultDiv.innerHTML = `
+                    <strong>✅ Agent Found!</strong><br>
+                    EOA: ${agent.agentEOA}<br>
+                    Generation: ${agent.generation}<br>
+                    Registered: ${new Date(agent.registeredAt * 1000).toLocaleDateString()}
+                `;
+                resultDiv.className = 'tool-result show success';
+            } else {
+                resultDiv.textContent = '❌ No agent bound to this NFT';
+                resultDiv.className = 'tool-result show';
+            }
+        } catch (error) {
+            resultDiv.textContent = 'Error: ' + error.message;
+            resultDiv.className = 'tool-result show error';
+        }
+    });
+    
+    // Bind agent
+    document.getElementById('bindBtn').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('bindResult');
+        const contract = document.getElementById('bindContract').value.trim();
+        const tokenId = document.getElementById('bindTokenId').value.trim();
+        const agentEOA = document.getElementById('bindAgentEOA').value.trim();
+        
+        if (!contract || !tokenId || !agentEOA) {
+            resultDiv.textContent = 'Please fill all fields';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        if (!REGISTRY_ADDRESS) {
+            resultDiv.textContent = 'Registry not deployed yet. Coming soon!';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        try {
+            resultDiv.textContent = 'Sending transaction...';
+            resultDiv.className = 'tool-result show';
+            
+            // Placeholder hashes (user would provide real ones)
+            const modelHash = '0x' + '0'.repeat(64);
+            const memoryHash = '0x' + '0'.repeat(64);
+            const contextHash = '0x' + '0'.repeat(64);
+            const storageURI = '';
+            
+            const tx = await sendRegistryTx('bindWithApproval', [
+                contract, tokenId, agentEOA, modelHash, memoryHash, contextHash, storageURI
+            ]);
+            
+            resultDiv.innerHTML = `
+                <strong>✅ Transaction Sent!</strong><br>
+                TX: <a href="${PENTAGON_CHAIN.blockExplorerUrls[0]}/tx/${tx}" target="_blank" style="color:#4ecdc4">${tx.slice(0,10)}...</a>
+            `;
+            resultDiv.className = 'tool-result show success';
+            
+        } catch (error) {
+            resultDiv.textContent = 'Error: ' + error.message;
+            resultDiv.className = 'tool-result show error';
+        }
+    });
+    
+    // Helper: Call registry (read)
+    async function callRegistry(method, params) {
+        // Simplified - would use ethers.js in production
+        // For now, show placeholder
+        throw new Error('Connect ethers.js for live queries');
+    }
+    
+    // Helper: Send registry tx (write)
+    async function sendRegistryTx(method, params) {
+        // Simplified - would use ethers.js in production
+        throw new Error('Connect ethers.js for live transactions');
+    }
+</script>
 </body>
 </html>
