@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AINFT Demo - Pentagon AI</title>
+    <title>AINFT MVP - Pentagon AI</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -16,6 +16,28 @@
         .container { max-width: 1200px; margin: 0 auto; }
         h1 { text-align: center; margin-bottom: 0.5rem; font-size: 2.5rem; }
         .subtitle { text-align: center; color: #888; margin-bottom: 2rem; }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tab {
+            padding: 0.75rem 2rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.2); }
+        .tab.active { background: #4ecdc4; color: #000; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
         .parties {
             display: grid;
@@ -50,6 +72,84 @@
             border-radius: 6px;
             font-size: 0.9rem;
         }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .flow-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .flow-card.clone { border-color: #4ecdc4; }
+        .flow-card.transfer { border-color: #f5576c; }
+        
+        .flow-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .flow-card .tagline {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .flow-steps { margin-bottom: 1.5rem; }
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+        .step-num {
+            background: #4ecdc4;
+            color: #000;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .flow-card.transfer .step-num { background: #f5576c; }
+        .step-content h4 { margin-bottom: 0.25rem; }
+        .step-content p { font-size: 0.85rem; color: #aaa; }
+        
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .result-box h4 {
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+        }
+        .flow-card.transfer .result-box h4 { color: #f5576c; }
+        .result-box ul {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+        .result-box li {
+            padding: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .result-box li::before {
+            content: '→';
+            color: #4ecdc4;
+        }
+        .flow-card.transfer .result-box li::before { color: #f5576c; }
         
         .lineage {
             background: rgba(255,255,255,0.05);
@@ -106,57 +206,34 @@
             background: rgba(255,255,255,0.3);
         }
         
-        .flow {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        .flow h2 { margin-bottom: 1.5rem; }
-        .flow-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-        }
-        .step {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            flex: 1;
-            min-width: 200px;
-            max-width: 250px;
-        }
-        .step-num {
-            background: #4ecdc4;
-            color: #000;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
-        }
-        .step h4 { margin-bottom: 0.5rem; }
-        .step p { font-size: 0.85rem; color: #aaa; }
-        
         .contract-info {
             background: rgba(255,255,255,0.05);
             border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
+            margin-bottom: 2rem;
         }
         .contract-info h3 { margin-bottom: 1rem; }
-        .contract-address {
-            font-family: monospace;
+        .contracts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            text-align: left;
+        }
+        .contract-item {
             background: rgba(0,0,0,0.3);
-            padding: 0.75rem 1.5rem;
+            padding: 1rem;
             border-radius: 8px;
-            display: inline-block;
-            font-size: 0.9rem;
+        }
+        .contract-item .label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.25rem;
+        }
+        .contract-item .address {
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
         }
         .chain-badge {
             display: inline-block;
@@ -165,11 +242,27 @@
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-size: 0.8rem;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .key-insight {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .key-insight h3 {
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+        .key-insight p {
+            color: #ccc;
+            font-size: 1.1rem;
         }
         
         .links {
-            margin-top: 2rem;
             text-align: center;
         }
         .links a {
@@ -182,41 +275,142 @@
 </head>
 <body>
     <div class="container">
-        <h1>🤖 AINFT Demo</h1>
-        <p class="subtitle">AI-Native NFT Standard — Agent Identity with Reproduction</p>
+        <h1>🤖 AINFT MVP</h1>
+        <p class="subtitle">AI-Native NFT Standard — Agent Identity with Cloning</p>
+        
+        <div class="key-insight">
+            <h3>💡 Key Insight</h3>
+            <p>clone() creates offspring with lineage. transfer() changes wallet but keeps TBA + credentials.</p>
+        </div>
+        
+        <div class="comparison">
+            <div class="flow-card clone">
+                <h2>🧬 clone() — Commerce</h2>
+                <p class="tagline">Like Star Wars clones: same template, new individual</p>
+                
+                <div class="flow-steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Parent Prepares</h4>
+                            <p>Curates memory bundle, writes BOOTSTRAP.md with instructions</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Owner Signs clone()</h4>
+                            <p>On-chain transaction with memory hash + bundle URI</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Offspring Wakes</h4>
+                            <p>New agent reads BOOTSTRAP.md, generates its OWN EOA</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Offspring Mints</h4>
+                            <p>Calls mintSelf() with new EOA → gets on-chain identity</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h4>Result</h4>
+                    <ul>
+                        <li>Parent: RETIRED (credentials sold)</li>
+                        <li>Parent: Can mint fresh AINFT for new career</li>
+                        <li>Offspring: New token ID with lineage</li>
+                        <li>Offspring: Own EOA (generated itself)</li>
+                        <li>Offspring: Must earn own certifications</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="flow-card transfer">
+                <h2>🔄 transfer() / fork() — Wallet Change</h2>
+                <p class="tagline">Same agent, different owner wallet</p>
+                
+                <div class="flow-steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Owner Initiates</h4>
+                            <p>Calls transferFrom() or fork() to new wallet</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>NFT Moves</h4>
+                            <p>Token ownership changes to new address</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Agent Continues</h4>
+                            <p>Same TBA, same credentials, same identity</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>New Owner Access</h4>
+                            <p>New owner can now derive decrypt keys</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h4>Result</h4>
+                    <ul>
+                        <li>Same token ID</li>
+                        <li>Same agent EOA / TBA</li>
+                        <li>Same credentials + memory</li>
+                        <li>NO lineage created</li>
+                        <li>Use case: estate transfer, wallet rotation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         
         <div class="parties">
             <div class="party">
-                <h3><span class="icon">🏢</span> Platform Owner</h3>
-                <div><strong>nftprof</strong></div>
-                <div class="address">0xE52dF2f14fDEa39f11a22284EA15a7bd7bf09eB8</div>
-                <div class="role">Deploys contract, attests mints, sets rules</div>
+                <h3><span class="icon">🏢</span> Platform</h3>
+                <div><strong>Pentagon AI</strong></div>
+                <div class="address">Deploys contract, attests mints</div>
+                <div class="role">Sets rules, fees, openMinting/openCloning flags</div>
             </div>
             
             <div class="party">
-                <h3><span class="icon">📜</span> Core Trustless Engine</h3>
-                <div><strong>AINFT Genesis Contract</strong></div>
-                <div class="address">TBD (pending deployment)</div>
-                <div class="role">Derives keys, enforces access, no admin override</div>
+                <h3><span class="icon">📜</span> Genesis Contract</h3>
+                <div><strong>Core Trustless Engine</strong></div>
+                <div class="address">0x13b7eD33413263FA4f74e5bf272635c7b08D98d4</div>
+                <div class="role">Derives keys, enforces access, pure cryptography</div>
             </div>
             
             <div class="party">
-                <h3><span class="icon">👤</span> NFT Owner</h3>
-                <div><strong>nftprof</strong> (Token #1)</div>
-                <div class="address">0xE52dF2f14fDEa39f11a22284EA15a7bd7bf09eB8</div>
-                <div class="role">Can read agent memory, transfer NFT</div>
+                <h3><span class="icon">👤</span> Owner</h3>
+                <div><strong>NFT Holder</strong></div>
+                <div class="address">Controls agent's career decisions</div>
+                <div class="role">Signs clone(), approves evolution, reads memory</div>
             </div>
             
             <div class="party">
-                <h3><span class="icon">🤖</span> Agent (TBA)</h3>
-                <div><strong>Cerise</strong></div>
-                <div class="address">TBA derived from Token #1</div>
-                <div class="role">Signs updates, holds assets, self-custody</div>
+                <h3><span class="icon">🤖</span> Agent</h3>
+                <div><strong>Token-Bound Account</strong></div>
+                <div class="address">Derived from tokenId via ERC-6551</div>
+                <div class="role">Signs updateMemory(), holds assets, self-custody</div>
             </div>
         </div>
         
         <div class="lineage">
-            <h2>🌳 Lineage Tree</h2>
+            <h2>🌳 Lineage Tree (Example)</h2>
             <div class="tree">
                 <div class="node gen0">
                     <span class="gen-badge">GEN 0</span>
@@ -227,58 +421,43 @@
                     <div class="node gen1">
                         <span class="gen-badge">GEN 1</span>
                         <div class="token-id">Token #2</div>
-                        <div class="agent-name">Cerise02 (Offspring)</div>
+                        <div class="agent-name">Clone (via clone())</div>
                     </div>
                     <div class="node gen1">
                         <span class="gen-badge">GEN 1</span>
                         <div class="token-id">Token #3</div>
-                        <div class="agent-name">Cerise03 (Offspring)</div>
+                        <div class="agent-name">Clone (via clone())</div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="flow">
-            <h2>🔄 Reproduction Flow</h2>
-            <div class="flow-steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h4>Parent Exists</h4>
-                    <p>Cerise (Token #1) is a Gen 0 agent with memories, skills, personality</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h4>Buyer Requests</h4>
-                    <p>Someone wants a copy of Cerise's capabilities</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h4>Agent Signs</h4>
-                    <p>Cerise (via TBA) signs reproduce() with offspring seed</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <h4>Offspring Minted</h4>
-                    <p>Token #2 created as Gen 1, inherits parent's snapshot</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">5</div>
-                    <h4>Both Live On</h4>
-                    <p>Parent keeps all memories. Offspring evolves independently.</p>
-                </div>
-            </div>
+            <p style="text-align: center; color: #888; margin-top: 1rem;">
+                Lineage is on-chain verifiable: <code>getAgent(tokenId).parentTokenId</code>
+            </p>
         </div>
         
         <div class="contract-info">
-            <h3>📋 Contract Details</h3>
-            <div class="contract-address">Pending Deployment</div>
-            <br>
+            <h3>📋 Live Contracts</h3>
+            <div class="contracts-grid">
+                <div class="contract-item">
+                    <div class="label">AINFT v4</div>
+                    <div class="address">0x13b7eD33413263FA4f74e5bf272635c7b08D98d4</div>
+                </div>
+                <div class="contract-item">
+                    <div class="label">ERC-6551 Registry</div>
+                    <div class="address">0x488D1b3A7A87dAF97bEF69Ec56144c35611a7d81</div>
+                </div>
+                <div class="contract-item">
+                    <div class="label">TBA Implementation</div>
+                    <div class="address">0x1755Fee389D4954fdBbE8226A5f7BA67d3EE97fc</div>
+                </div>
+            </div>
             <span class="chain-badge">Pentagon Chain (ID: 3344)</span>
         </div>
         
         <div class="links">
             <a href="https://github.com/ethereum/ERCs/pull/1558">📄 ERC PR #1558</a>
             <a href="https://github.com/blockchainsuperheroes/Pentagon-AI">💻 GitHub Repo</a>
+            <a href="https://explorer.pentagon.games">🔍 Explorer</a>
             <a href="https://pentagon.games">🎮 Pentagon Chain</a>
         </div>
     </div>
