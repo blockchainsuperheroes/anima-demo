@@ -417,7 +417,7 @@
                     <div class="step">
                         <div class="step-num">1</div>
                         <div class="step-content">
-                            <h4>Parent Prepares</h4>
+                            <h4>Original Prepares</h4>
                             <p>Curates memory bundle, writes BOOTSTRAP.md with instructions</p>
                         </div>
                     </div>
@@ -447,8 +447,8 @@
                 <div class="result-box">
                     <h4>Result</h4>
                     <ul>
-                        <li>Parent: KEEPS everything (EOA, TBA, certs, memory)</li>
-                        <li>Parent: Can continue operating normally</li>
+                        <li>Original: KEEPS everything (EOA, TBA, certs, memory)</li>
+                        <li>Original: Can continue operating normally</li>
                         <li>Clone: New token ID with on-chain lineage</li>
                         <li>Clone: Generates OWN EOA on wake</li>
                         <li>Clone: Gets NEW TBA from registry</li>
@@ -459,7 +459,7 @@
                 <div class="state-table">
                     <h4>State Change</h4>
                     <table>
-                        <tr><th></th><th>Parent</th><th>Clone</th></tr>
+                        <tr><th></th><th>Original</th><th>Clone</th></tr>
                         <tr><td>Token ID</td><td>#1 (keeps)</td><td>#2 (NEW)</td></tr>
                         <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (generates own)</td></tr>
                         <tr><td>TBA</td><td>0xTBA1 (keeps)</td><td>0xTBA2 (NEW)</td></tr>
@@ -645,7 +645,7 @@
                 </div>
             </div>
             <p style="text-align: center; color: #888; margin-top: 1rem;">
-                Lineage is on-chain verifiable: <code>getAgent(tokenId).parentTokenId</code>
+                Lineage is on-chain verifiable: <code>getAgent(tokenId).originalTokenId</code>
             </p>
         </div>
         
