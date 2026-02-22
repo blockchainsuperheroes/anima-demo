@@ -844,7 +844,7 @@
                 <div class="register-step">
                     <div class="register-num">3</div>
                     <div class="register-content">
-                        <h4>Agent calls bind()</h4>
+                        <h4>Agent calls bindNew()</h4>
                         <p>Registry verifies NFT ownership, binds agent</p>
                     </div>
                 </div>
@@ -859,9 +859,9 @@
             </div>
             
             <div class="register-code">
-                <h4>bind() Example</h4>
+                <h4>bindNew() Example</h4>
                 <pre><code>// Agent calls this (msg.sender = agent EOA)
-registry.bind(
+registry.bindNew(
     0x8F83c6122...  // NFT contract (e.g., EtherFantasy)
     123,             // Your token ID
     modelHash,       // Off-chain reference
@@ -872,7 +872,7 @@ registry.bind(
             
             <p class="register-note">
                 <strong>Sell on OpenSea?</strong> Agent binding follows automatically. 
-                New owner can keep existing agent, or <code>unbind()</code> + <code>bind()</code> their own.
+                New owner can keep existing agent, or <code>unbind()</code> + <code>bindNew()</code>/<code>bindExisting()</code> their own.
             </p>
         </div>
         
@@ -900,8 +900,8 @@ registry.bind(
                 
                 <!-- Bind Agent -->
                 <div class="tool-card">
-                    <h3>🔗 Bind Agent</h3>
-                    <p class="tool-desc">Make your NFT AI-native (owner signs)</p>
+                    <h3>🔗 bindNew()</h3>
+                    <p class="tool-desc">Create new agent binding (owner signs)</p>
                     <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
                     <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
                     <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
