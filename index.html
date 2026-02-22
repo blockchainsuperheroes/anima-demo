@@ -905,7 +905,7 @@ registry.bindNew(
                     <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
                     <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
                     <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
-                    <button id="bindBtn" class="tool-btn" disabled>Bind (Connect Wallet First)</button>
+                    <button id="bindBtn" class="tool-btn" disabled>bindNew (Connect Wallet First)</button>
                     <div id="bindResult" class="tool-result"></div>
                 </div>
             </div>
@@ -980,7 +980,7 @@ registry.bindNew(
             document.getElementById('connectBtn').disabled = true;
             document.getElementById('walletInfo').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
             document.getElementById('bindBtn').disabled = !REGISTRY_ADDRESS;
-            document.getElementById('bindBtn').textContent = REGISTRY_ADDRESS ? 'Bind Agent' : 'Registry Not Deployed';
+            document.getElementById('bindBtn').textContent = REGISTRY_ADDRESS ? 'bindNew' : 'Registry Not Deployed';
             
         } catch (error) {
             console.error(error);
