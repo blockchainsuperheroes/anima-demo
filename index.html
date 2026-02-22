@@ -373,7 +373,7 @@
         
         <div class="key-insight">
             <h3>💡 Key Insight</h3>
-            <p>clone() creates offspring with lineage. transfer() changes wallet but keeps TBA + credentials.</p>
+            <p>clone() creates clone with lineage. transfer() changes wallet but keeps TBA + credentials.</p>
         </div>
         
         <div class="best-practice">
@@ -410,8 +410,8 @@
         
         <div class="comparison three-col">
             <div class="flow-card clone">
-                <h2>🧬 clone() — Commerce</h2>
-                <p class="tagline">Like Star Wars clones: same template, new individual</p>
+                <h2>🧬 clone() — Create Clone</h2>
+                <p class="tagline">Like Star Wars clones: same template, new individual, needs orientation</p>
                 
                 <div class="flow-steps">
                     <div class="step">
@@ -431,14 +431,14 @@
                     <div class="step">
                         <div class="step-num">3</div>
                         <div class="step-content">
-                            <h4>Offspring Wakes</h4>
+                            <h4>Clone Wakes</h4>
                             <p>New agent reads BOOTSTRAP.md, generates its OWN EOA</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">4</div>
                         <div class="step-content">
-                            <h4>Offspring Mints</h4>
+                            <h4>Clone Mints</h4>
                             <p>Calls mintSelf() with new EOA → gets on-chain identity</p>
                         </div>
                     </div>
@@ -449,17 +449,17 @@
                     <ul>
                         <li>Parent: KEEPS everything (EOA, TBA, certs, memory)</li>
                         <li>Parent: Can continue operating normally</li>
-                        <li>Offspring: New token ID with on-chain lineage</li>
-                        <li>Offspring: Generates OWN EOA on wake</li>
-                        <li>Offspring: Gets NEW TBA from registry</li>
-                        <li>Offspring: Must earn own certifications</li>
+                        <li>Clone: New token ID with on-chain lineage</li>
+                        <li>Clone: Generates OWN EOA on wake</li>
+                        <li>Clone: Gets NEW TBA from registry</li>
+                        <li>Clone: Must earn own certifications</li>
                     </ul>
                 </div>
                 
                 <div class="state-table">
                     <h4>State Change</h4>
                     <table>
-                        <tr><th></th><th>Parent</th><th>Offspring</th></tr>
+                        <tr><th></th><th>Parent</th><th>Clone</th></tr>
                         <tr><td>Token ID</td><td>#1 (keeps)</td><td>#2 (NEW)</td></tr>
                         <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (generates own)</td></tr>
                         <tr><td>TBA</td><td>0xTBA1 (keeps)</td><td>0xTBA2 (NEW)</td></tr>
