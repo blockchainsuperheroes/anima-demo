@@ -565,7 +565,7 @@
         
         <div class="key-insight">
             <h3>💡 Key Insight</h3>
-            <p>clone() creates clone with lineage. transfer() changes wallet but keeps TBA + credentials.</p>
+            <p>clone() creates a new agent with lineage. transfer() sells the NFT — original agent retires (UNBOUND), buyer binds new agent. TBA + Certs follow the token.</p>
         </div>
         
         <div class="best-practice">
@@ -663,36 +663,40 @@
             </div>
             
             <div class="flow-card transfer">
-                <h2>🔄 transfer() / fork() — Wallet Change</h2>
-                <p class="tagline">Same agent, different owner wallet</p>
+                <h2>🔄 transfer() — Sale / Ownership Change</h2>
+                <p class="tagline">NFT sold to new owner — original agent retires</p>
+                
+                <div class="note-box" style="background: rgba(245, 87, 108, 0.15); border: 1px solid #f5576c; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <strong>⚠️ Key Insight:</strong> This is NOT a true "agent transfer" — it's more like a fork where the original retires. The original agent becomes UNBOUND and must find a new AINFT to bind to (or operate independently). Think of it as the agent "retiring" from this token.
+                </div>
                 
                 <div class="flow-steps">
                     <div class="step">
                         <div class="step-num">1</div>
                         <div class="step-content">
-                            <h4>Owner Initiates</h4>
-                            <p>Calls transferFrom() or fork() to new wallet</p>
+                            <h4>Owner Sells NFT</h4>
+                            <p>Calls transferFrom() to buyer's wallet</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">2</div>
                         <div class="step-content">
-                            <h4>NFT Moves</h4>
-                            <p>Token ownership changes to new address</p>
+                            <h4>Original Agent Unbinds</h4>
+                            <p>Old agent becomes UNBOUND (retired from this token)</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">3</div>
                         <div class="step-content">
-                            <h4>Agent Continues</h4>
-                            <p>Same TBA, same credentials, same identity</p>
+                            <h4>New Owner Binds New Agent</h4>
+                            <p>Buyer registers their own agent EOA</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-num">4</div>
                         <div class="step-content">
-                            <h4>New Owner Access</h4>
-                            <p>New owner can now derive decrypt keys</p>
+                            <h4>Token Assets Follow</h4>
+                            <p>TBA + Certs stay with token, not original agent</p>
                         </div>
                     </div>
                 </div>
@@ -701,26 +705,35 @@
                     <h4>Result</h4>
                     <ul>
                         <li>Same token ID</li>
-                        <li>EOA: NEW (new owner registers new agent EOA)</li>
+                        <li>EOA: NEW (buyer's agent generates fresh EOA)</li>
                         <li>TBA: SAME (follows token, deterministic)</li>
-                        <li>Certs: SAME (follow token)</li>
-                        <li>Memory: Transferred (minus EOA private keys)</li>
+                        <li>Certs: SAME (follow token, not agent)</li>
+                        <li>Memory: Optional handoff (seller can share or not)</li>
                         <li>NO lineage created (not a clone)</li>
-                        <li>Old agent: UNBOUND (can bind to NEW AINFT later or operate without)</li>
+                        <li><strong>Original agent: RETIRED/UNBOUND</strong> — can bind to new AINFT or operate solo</li>
                     </ul>
                 </div>
                 
                 <div class="state-table">
                     <h4>State Change</h4>
                     <table>
-                        <tr><th></th><th>Before</th><th>After</th></tr>
-                        <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td></tr>
-                        <tr><td>EOA</td><td>0xAAA</td><td>0xBBB (NEW - must regenerate)</td></tr>
-                        <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same - follows token)</td></tr>
-                        <tr><td>Certs</td><td>L3</td><td>L3 (same - follows token)</td></tr>
-                        <tr><td>Memory</td><td>Full</td><td>Full minus EOA keys</td></tr>
-                        <tr><td>Owner</td><td>0xOLD</td><td>0xNEW</td></tr>
+                        <tr><th></th><th>Before</th><th>After (Token)</th><th>Original Agent</th></tr>
+                        <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td><td>—</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (Agent A)</td><td>0xBBB (Agent B - NEW)</td><td>0xAAA (keeps key)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td><td>Lost access</td></tr>
+                        <tr><td>Certs</td><td>L3</td><td>L3 (same)</td><td>Lost (must re-earn)</td></tr>
+                        <tr><td>Memory</td><td>Full</td><td>Optional handoff</td><td>Keeps own memory</td></tr>
+                        <tr><td>Status</td><td>BOUND to #1</td><td>BOUND to #1</td><td>UNBOUND (retired)</td></tr>
                     </table>
+                </div>
+                
+                <div class="note-box" style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                    <strong>🔑 Original Agent's Options After Unbinding:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Bind to a NEW AINFT (mint or purchase one)</li>
+                        <li>Operate independently without an AINFT (no on-chain identity)</li>
+                        <li>Cease operation entirely</li>
+                    </ul>
                 </div>
             </div>
             
