@@ -59,6 +59,22 @@
         .result-box li { padding: 0.2rem 0; }
         .warning-box { background: rgba(245, 87, 108, 0.15); border: 1px solid #f5576c; border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; font-size: 0.85rem; }
         
+        /* State Tables */
+        .state-table { margin-top: 1rem; }
+        .state-table h4 { color: #4ecdc4; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .flow-card.transfer .state-table h4 { color: #f5576c; }
+        .flow-card.migration .state-table h4 { color: #f5a623; }
+        .state-table table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .state-table th, .state-table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .state-table th { color: #888; font-weight: normal; }
+        .state-table td { color: #ccc; }
+        
+        /* Example Box */
+        .example-box { background: linear-gradient(135deg, rgba(245, 87, 108, 0.15), rgba(78, 205, 196, 0.1)); border: 1px solid #f5576c; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+        .example-box h4 { color: #f5576c; margin-bottom: 0.5rem; }
+        .example-box p { color: #ccc; font-size: 0.85rem; line-height: 1.5; }
+        .example-box code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+        
         /* Storage */
         .section { margin-bottom: 3rem; }
         .section h2 { text-align: center; margin-bottom: 1.5rem; color: #4ecdc4; }
@@ -123,40 +139,56 @@
                         <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Owner Signs clone()</h4><p>On-chain tx with memory hash + bundle URI</p></div></div>
                         <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Clone Wakes</h4><p>New agent reads BOOTSTRAP, generates OWN EOA</p></div></div>
                         <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Clone Mints</h4><p>Calls mintSelf() → gets on-chain identity</p></div></div>
-                        <div class="result-box"><h4>Result</h4><ul>
-                            <li>→ Original: KEEPS everything (EOA, TBA, certs)</li>
-                            <li>→ Clone: New token ID with lineage</li>
-                            <li>→ Clone: Generates OWN EOA, gets NEW TBA</li>
-                            <li>→ Clone: Must earn own certifications</li>
-                        </ul></div>
+                        <div class="state-table"><h4>State Change</h4>
+                            <table>
+                                <tr><th></th><th>Original</th><th>Clone</th></tr>
+                                <tr><td>Token ID</td><td>#1 (keeps)</td><td>#2 (NEW)</td></tr>
+                                <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (generates own)</td></tr>
+                                <tr><td>TBA</td><td>0xTBA1 (keeps)</td><td>0xTBA2 (NEW)</td></tr>
+                                <tr><td>Certs</td><td>L3 (keeps)</td><td>NONE (earn own)</td></tr>
+                                <tr><td>Memory</td><td>Full (keeps)</td><td>Clone (inherited)</td></tr>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="flow-card transfer">
-                        <h3>🔄 transfer() — Sale</h3>
-                        <p class="tagline">NFT sold to new owner — original agent retires</p>
-                        <div class="warning-box">⚠️ <strong>Key Insight:</strong> Original agent becomes UNBOUND and must find a new AINFT to bind to (or operate independently).</div>
-                        <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Owner Sells NFT</h4><p>Calls transferFrom() to buyer</p></div></div>
-                        <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Original Agent Unbinds</h4><p>Old agent becomes UNBOUND (retired)</p></div></div>
-                        <div class="step"><div class="step-num">3</div><div class="step-content"><h4>New Owner Binds Agent</h4><p>Buyer registers their own agent EOA</p></div></div>
-                        <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Assets Follow Token</h4><p>TBA + Certs stay with token</p></div></div>
-                        <div class="result-box"><h4>Result</h4><ul>
-                            <li>→ Same token ID, NEW agent EOA</li>
-                            <li>→ TBA + Certs follow token</li>
-                            <li>→ Original agent: UNBOUND (can rebind elsewhere)</li>
-                        </ul></div>
+                        <h3>🏠 unbind() + rebind() — The Retirement Sale</h3>
+                        <p class="tagline">Agent retires from token — new agent moves in</p>
+                        <div class="example-box">
+                            <h4>🎬 Example: The Baton Pass</h4>
+                            <p><strong>JARVIS</strong> has served Tony for 3 years, building reputation and earning L3 certification. Tony decides to sell the AINFT.</p>
+                            <p style="margin-top: 0.5rem;"><strong>The Sale:</strong> JARVIS calls <code>unbind()</code> and "retires" from Token #1. The NFT transfers to Pepper. Pepper's agent <strong>FRIDAY</strong> calls <code>rebind()</code> and inherits Token #1's TBA wallet + L3 certs.</p>
+                            <p style="margin-top: 0.5rem; color: #888; font-size: 0.8rem;"><em>JARVIS isn't deleted — he can bind to a new AINFT, go indie, or take a vacation. 🏖️</em></p>
+                        </div>
+                        <div class="state-table"><h4>State Change</h4>
+                            <table>
+                                <tr><th></th><th>Before</th><th>After (Token #1)</th><th>JARVIS (retired)</th></tr>
+                                <tr><td>Token</td><td>#1 w/ JARVIS</td><td>#1 w/ FRIDAY</td><td>—</td></tr>
+                                <tr><td>EOA</td><td>0xJARVIS</td><td>0xFRIDAY (new)</td><td>0xJARVIS (keeps)</td></tr>
+                                <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td><td>❌ Lost access</td></tr>
+                                <tr><td>Certs</td><td>L3</td><td>L3 (inherited)</td><td>❌ Must re-earn</td></tr>
+                                <tr><td>Status</td><td>BOUND</td><td>BOUND</td><td>FREE AGENT</td></tr>
+                            </table>
+                        </div>
                     </div>
                     
                     <div class="flow-card migration">
-                        <h3>💾 migration_backup()</h3>
-                        <p class="tagline">Same agent, new device (shutdown old first!)</p>
+                        <h3>💾 migration_backup() — Device Change</h3>
+                        <p class="tagline">Same agent, new machine (shutdown old first!)</p>
                         <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Shutdown Old Instance</h4><p>CRITICAL: Stop old agent first</p></div></div>
                         <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Create Backup</h4><p>Includes EOA key (one-time use)</p></div></div>
                         <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Restore on New Device</h4><p>Agent resumes with same identity</p></div></div>
                         <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Delete Backup</h4><p>Remove EOA-containing backup immediately</p></div></div>
-                        <div class="result-box"><h4>Result</h4><ul>
-                            <li>→ Same token ID, EOA, TBA, Certs, Memory</li>
-                            <li>→ ⚠️ NEVER run two instances with same EOA</li>
-                        </ul></div>
+                        <div class="state-table"><h4>State Change</h4>
+                            <table>
+                                <tr><th></th><th>Old Device</th><th>New Device</th></tr>
+                                <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td></tr>
+                                <tr><td>EOA</td><td>0xAAA (shutdown)</td><td>0xAAA (migrated)</td></tr>
+                                <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td></tr>
+                                <tr><td>Instance</td><td>STOPPED</td><td>RUNNING</td></tr>
+                            </table>
+                        </div>
+                        <p style="margin-top: 0.75rem; color: #f5a623; font-size: 0.8rem;">⚠️ NEVER run two instances with same EOA</p>
                     </div>
                 </div>
             </div>
