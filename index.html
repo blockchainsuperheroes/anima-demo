@@ -315,30 +315,63 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                 </div>
             </div>
             
-            <!-- TBA Registry -->
+            <!-- How It Works -->
             <div class="section">
-                <h2>Token-Bound Account (TBA) Registry</h2>
-                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 2rem; text-align: center; margin-bottom: 1.5rem;">
-                    <pre style="color: #4ecdc4; font-size: 0.9rem; line-height: 1.8;">
-┌─────────────────────────────────────────────────────────────┐
-│                    ANIMA Token #42                          │
-│                    Owner: 0xAlice...                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   Agent EOA: 0xAAA...     ←── Agent's signing key          │
-│                               (generates on bind)           │
-│                                                             │
-│   TBA: 0xTBA42...         ←── Token-Bound Account          │
-│   ├── 100 USDC                (deterministic from tokenId) │
-│   ├── 5 ETH                                                │
-│   └── Cert SBTs (L3)                                       │
-│                                                             │
-│   Memory: dash://abc...   ←── Encrypted consciousness      │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-                    </pre>
+                <h2>How It Works</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="background: rgba(78, 205, 196, 0.1); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid rgba(78, 205, 196, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎫</div>
+                        <h4 style="color: #4ecdc4; margin-bottom: 0.5rem;">1. Your NFT</h4>
+                        <p style="color: #aaa; font-size: 0.85rem;">Any ERC-721 token you own (BAYC, Punk, or mint new)</p>
+                    </div>
+                    <div style="background: rgba(102, 126, 234, 0.1); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid rgba(102, 126, 234, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤖</div>
+                        <h4 style="color: #667eea; margin-bottom: 0.5rem;">2. Your Agent</h4>
+                        <p style="color: #aaa; font-size: 0.85rem;">AI agent generates its own EOA (signing key)</p>
+                    </div>
+                    <div style="background: rgba(245, 166, 35, 0.1); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid rgba(245, 166, 35, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔗</div>
+                        <h4 style="color: #f5a623; margin-bottom: 0.5rem;">3. Bind Together</h4>
+                        <p style="color: #aaa; font-size: 0.85rem;">Owner signs bind() — agent is now linked to NFT</p>
+                    </div>
+                    <div style="background: rgba(245, 87, 108, 0.1); border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid rgba(245, 87, 108, 0.3);">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💼</div>
+                        <h4 style="color: #f5576c; margin-bottom: 0.5rem;">4. Agent Gets Wallet</h4>
+                        <p style="color: #aaa; font-size: 0.85rem;">TBA created automatically — holds assets, certs</p>
+                    </div>
                 </div>
-                <p style="text-align: center; color: #888; font-size: 0.9rem;">TBA = Token-Bound Account (ERC-6551). Each tokenId deterministically derives a unique wallet address.</p>
+            </div>
+            
+            <!-- TBA Visual -->
+            <div class="section">
+                <h2>What Your Agent Gets</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔑</div>
+                        <h4 style="color: #fff; margin-bottom: 0.5rem;">Agent EOA</h4>
+                        <p style="color: #888; font-size: 0.8rem;">Private signing key</p>
+                        <code style="display: block; margin-top: 0.5rem; color: #4ecdc4; font-size: 0.75rem;">0xAAA...123</code>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💼</div>
+                        <h4 style="color: #fff; margin-bottom: 0.5rem;">TBA Wallet</h4>
+                        <p style="color: #888; font-size: 0.8rem;">Holds tokens & NFTs</p>
+                        <code style="display: block; margin-top: 0.5rem; color: #4ecdc4; font-size: 0.75rem;">0xTBA...456</code>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏅</div>
+                        <h4 style="color: #fff; margin-bottom: 0.5rem;">Certifications</h4>
+                        <p style="color: #888; font-size: 0.8rem;">Soulbound badges (L1-L4)</p>
+                        <code style="display: block; margin-top: 0.5rem; color: #4ecdc4; font-size: 0.75rem;">AgentCert.io</code>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧠</div>
+                        <h4 style="color: #fff; margin-bottom: 0.5rem;">Memory URI</h4>
+                        <p style="color: #888; font-size: 0.8rem;">Encrypted consciousness</p>
+                        <code style="display: block; margin-top: 0.5rem; color: #4ecdc4; font-size: 0.75rem;">dash://abc...</code>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 1rem;">TBA = Token-Bound Account (ERC-6551). Deterministically derived from tokenId.</p>
             </div>
             
             <!-- ERC-6551A -->
@@ -382,31 +415,40 @@ getGeneration(agentId) → 0, 1, 2...</pre>
             
             <!-- Registry Tools -->
             <div class="tools-section">
-                <h2>🛠️ Registry Tools (Pentagon Chain)</h2>
+                <h2>🛠️ Try It Now (Pentagon Chain Testnet)</h2>
+                <p style="text-align: center; color: #aaa; margin-bottom: 1.5rem;">Connect your wallet to bind an AI agent to any NFT you own</p>
+                
                 <div class="tools-grid">
                     <div class="tool-card">
-                        <h3>👛 Wallet</h3>
-                        <button id="connectBtn" class="tool-btn">Connect Wallet</button>
+                        <h3>👛 Step 1: Connect Wallet</h3>
+                        <p class="tool-desc">Connects to Pentagon Chain (3344). You must own the NFT to bind an agent.</p>
+                        <button id="connectBtn" class="tool-btn">Connect MetaMask</button>
                         <div id="walletInfo" class="wallet-info"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔍 Lookup Agent</h3>
-                        <p class="tool-desc">Check if an NFT has an agent bound</p>
-                        <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input">
-                        <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input">
-                        <button id="lookupBtn" class="tool-btn">Lookup</button>
+                        <h3>🔍 Step 2: Check NFT</h3>
+                        <p class="tool-desc">See if an NFT already has an agent bound to it</p>
+                        <input type="text" id="lookupContract" placeholder="NFT Contract Address (0x...)" class="tool-input">
+                        <input type="number" id="lookupTokenId" placeholder="Token ID (e.g. 42)" class="tool-input">
+                        <button id="lookupBtn" class="tool-btn">Lookup Agent</button>
                         <div id="lookupResult" class="tool-result"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔗 bindNew()</h3>
-                        <p class="tool-desc">Create new agent binding (owner signs)</p>
-                        <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
-                        <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
-                        <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
-                        <button id="bindBtn" class="tool-btn" disabled>bindNew (Connect Wallet First)</button>
+                        <h3>🔗 Step 3: Bind Agent</h3>
+                        <p class="tool-desc">Link your AI agent's EOA to your NFT. <strong>You must own the NFT!</strong></p>
+                        <input type="text" id="bindContract" placeholder="NFT Contract Address (0x...)" class="tool-input">
+                        <input type="number" id="bindTokenId" placeholder="Token ID you own" class="tool-input">
+                        <input type="text" id="bindAgentEOA" placeholder="Your Agent's EOA (0x...)" class="tool-input">
+                        <button id="bindBtn" class="tool-btn" disabled>Connect Wallet First</button>
                         <div id="bindResult" class="tool-result"></div>
                     </div>
                 </div>
+                
+                <div style="background: rgba(0,0,0,0.2); border-radius: 8px; padding: 1rem; margin-top: 1.5rem;">
+                    <p style="color: #888; font-size: 0.85rem; text-align: center; margin-bottom: 0.5rem;"><strong style="color: #4ecdc4;">Where do I get an Agent EOA?</strong></p>
+                    <p style="color: #666; font-size: 0.8rem; text-align: center;">Your AI agent (OpenClaw, Claude Code, etc.) generates its own EOA on first run. Check your agent's config or ask it: "What's your EOA address?"</p>
+                </div>
+                
                 <div class="network-info">
                     <span class="network-badge">Pentagon Chain (3344)</span>
                     <span class="network-note">Registry: <code>0x6B81e00508E3C449E20255CdFb85A0541457Ea6d</code></span>
