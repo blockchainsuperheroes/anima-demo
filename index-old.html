@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERC-XXXX: Agentic NFT (ANIMA) — Decentralized Agent Consciousness</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 0.5rem; font-size: 2.5rem; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 0.5rem; }
+        .pr-link { text-align: center; margin-bottom: 2rem; }
+        .pr-link a { color: #4ecdc4; text-decoration: none; font-size: 1.1rem; }
+        .pr-link a:hover { text-decoration: underline; }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tab {
+            padding: 0.75rem 2rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.2); }
+        .tab.active { background: #4ecdc4; color: #000; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .parties {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .party {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .party h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #4ecdc4;
+        }
+        .party .icon { font-size: 1.5rem; }
+        .party .address {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #888;
+            word-break: break-all;
+        }
+        .party .role {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(78, 205, 196, 0.1);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .flow-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .flow-card.clone { border-color: #4ecdc4; }
+        .flow-card.transfer { border-color: #f5576c; }
+        .flow-card.migration { border-color: #f5a623; }
+        .comparison.three-col { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        
+        .flow-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .flow-card .tagline {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .flow-steps { margin-bottom: 1.5rem; }
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+        .step-num {
+            background: #4ecdc4;
+            color: #000;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .flow-card.transfer .step-num { background: #f5576c; }
+        .flow-card.migration .step-num { background: #f5a623; }
+        .step-content h4 { margin-bottom: 0.25rem; }
+        .step-content p { font-size: 0.85rem; color: #aaa; }
+        
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .result-box h4 {
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+        }
+        .flow-card.transfer .result-box h4 { color: #f5576c; }
+        .flow-card.migration .result-box h4 { color: #f5a623; }
+        .flow-card.migration .result-box li::before { color: #f5a623; }
+        .result-box ul {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+        .result-box li {
+            padding: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .result-box li::before {
+            content: '→';
+            color: #4ecdc4;
+        }
+        .flow-card.transfer .result-box li::before { color: #f5576c; }
+        
+        .lineage {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .lineage h2 { margin-bottom: 1.5rem; text-align: center; }
+        
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .node {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+        .node.gen0 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .node.gen1 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .node .token-id { font-size: 1.5rem; font-weight: bold; }
+        .node .agent-name { font-size: 0.9rem; opacity: 0.9; }
+        .node .gen-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #fff;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .children {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            position: relative;
+        }
+        .children::before {
+            content: '';
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            width: 2px;
+            height: 1rem;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .contract-info {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .contract-info h3 { margin-bottom: 1rem; }
+        .contracts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            text-align: left;
+        }
+        .contract-item {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .contract-item .label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.25rem;
+        }
+        .contract-item .address {
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+        .chain-badge {
+            display: inline-block;
+            background: #4ecdc4;
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .key-insight {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .key-insight h3 {
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+        .key-insight p {
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+        
+        .links {
+            text-align: center;
+        }
+        .links a {
+            color: #4ecdc4;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        .links a:hover { text-decoration: underline; }
+        
+        .register-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .register-section h2 { margin-bottom: 0.5rem; color: #667eea; }
+        .register-subtitle { color: #888; margin-bottom: 1.5rem; }
+        .register-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .register-step {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 160px;
+            text-align: left;
+        }
+        .register-num {
+            background: #667eea;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .register-content h4 { margin-bottom: 0.25rem; font-size: 0.95rem; }
+        .register-content p { font-size: 0.8rem; color: #aaa; }
+        .register-arrow { color: #667eea; font-size: 1.5rem; }
+        .register-code {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: left;
+            margin: 1rem auto;
+            max-width: 500px;
+        }
+        .register-code h4 { color: #667eea; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .register-code pre {
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            color: #ccc;
+        }
+        .register-note {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        .register-note code {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+        }
+        
+        .tools-section {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tools-section h2 { text-align: center; margin-bottom: 1.5rem; color: #4ecdc4; }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .tool-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .tool-card h3 { margin-bottom: 0.5rem; color: #fff; }
+        .tool-desc { color: #888; font-size: 0.85rem; margin-bottom: 1rem; }
+        .tool-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        .tool-input::placeholder { color: #666; }
+        .tool-input:focus { outline: none; border-color: #4ecdc4; }
+        .tool-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            background: #4ecdc4;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tool-btn:hover { background: #3dbdb5; }
+        .tool-btn:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .tool-result {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            display: none;
+        }
+        .tool-result.show { display: block; }
+        .tool-result.success { border-left: 3px solid #4ecdc4; }
+        .tool-result.error { border-left: 3px solid #ff6b6b; }
+        .wallet-info {
+            margin-top: 0.75rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #4ecdc4;
+        }
+        .network-info {
+            text-align: center;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .network-badge {
+            background: rgba(78, 205, 196, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #4ecdc4;
+        }
+        .network-note { color: #888; font-size: 0.85rem; }
+        .network-note code { color: #4ecdc4; }
+        
+        .best-practice {
+            background: linear-gradient(135deg, rgba(245, 166, 35, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            border: 1px solid rgba(245, 166, 35, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .best-practice h3 {
+            color: #f5a623;
+            margin-bottom: 0.5rem;
+        }
+        .best-practice p {
+            color: #ccc;
+            margin: 0.25rem 0;
+        }
+        
+        .registry-explainer {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .registry-explainer h2 { margin-bottom: 0.5rem; }
+        .registry-subtitle { color: #888; margin-bottom: 1.5rem; }
+        .registry-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .registry-step {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            min-width: 150px;
+        }
+        .registry-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .registry-label { font-weight: bold; margin-bottom: 0.25rem; }
+        .registry-detail { font-size: 0.8rem; color: #888; font-family: monospace; }
+        .registry-arrow { font-size: 1.5rem; color: #4ecdc4; }
+        .registry-note {
+            margin-top: 1.5rem;
+            color: #aaa;
+            font-size: 0.9rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .state-table {
+            margin-top: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .state-table h4 {
+            margin-bottom: 0.5rem;
+            color: #4ecdc4;
+            font-size: 0.9rem;
+        }
+        .flow-card.transfer .state-table h4 { color: #f5576c; }
+        .flow-card.migration .state-table h4 { color: #f5a623; }
+        .state-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .state-table th, .state-table td {
+            padding: 0.4rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .state-table th {
+            color: #888;
+            font-weight: normal;
+        }
+        .state-table td:first-child {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><a href="https://github.com/ethereum/ERCs/pull/1558" style="color: #fff; text-decoration: none;">ERC-XXXX: Agentic NFT <span style="color: #4ecdc4;">(ANIMA)</span></a></h1>
+        <p class="subtitle" style="color: #aaa; margin-bottom: 0.5rem; font-size: 1.2rem;">The soul of your agent, on-chain</p>
+        <p class="subtitle">AI-Native NFT Standard — Your AI Agent, Fully On-Chain</p>
+        <div class="pr-link">
+            <a href="https://github.com/ethereum/ERCs/pull/1558">📄 PR #1558</a>
+            <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs">💻 Specification</a>
+            <a href="6551a.html">← ERC-6551A (Registry)</a>
+        </div>
+        
+        <!-- Compatibility Banner -->
+        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%); border: 2px solid rgba(102, 126, 234, 0.5); border-radius: 16px; padding: 1.5rem 2rem; margin-bottom: 2rem;">
+            <h2 style="text-align: center; margin-bottom: 1rem; color: #667eea;">🔗 Works With Any Existing NFT</h2>
+            <p style="text-align: center; color: #ccc; margin-bottom: 1rem; font-size: 1rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                Using the <strong style="color: #4ecdc4;">Registry Design Pattern</strong>, you can make ANY ERC-721 NFT AI-native — no contract modification required. Compatible with existing marketplaces and trading infrastructure.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <a href="https://opensea.io" target="_blank" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 8px; color: #fff; text-decoration: none; font-size: 0.9rem;">OpenSea ↗</a>
+                <a href="https://blur.io" target="_blank" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 8px; color: #fff; text-decoration: none; font-size: 0.9rem;">Blur ↗</a>
+                <a href="https://looksrare.org" target="_blank" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 8px; color: #fff; text-decoration: none; font-size: 0.9rem;">LooksRare ↗</a>
+                <a href="https://rarible.com" target="_blank" style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 8px; color: #fff; text-decoration: none; font-size: 0.9rem;">Rarible ↗</a>
+            </div>
+            <p style="text-align: center; color: #888; font-size: 0.85rem; font-style: italic;">
+                ⚠️ Limitation: Cross-chain transfers require additional messaging layer evaluation (e.g., LayerZero, Chainlink CCIP)
+            </p>
+        </div>
+        
+        <!-- Why AINFT Section -->
+        <div class="why-section" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.15) 0%, rgba(102, 126, 234, 0.15) 100%); border: 1px solid rgba(78, 205, 196, 0.4); border-radius: 16px; padding: 2rem; margin-bottom: 2rem;">
+            <h2 style="text-align: center; margin-bottom: 0.5rem; color: #4ecdc4;">🤔 Why Register or Mint an AINFT?</h2>
+            <p style="text-align: center; color: #aaa; margin-bottom: 1.5rem; font-size: 1rem;">Connect your AI agent (OpenClaw, Claude, custom GPT, or any agentic system) to an NFT you already own — or mint a new one.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="color: #4ecdc4; margin-bottom: 0.75rem;">🔐 True Ownership</h3>
+                    <p style="color: #ccc; font-size: 0.95rem; line-height: 1.6;">Your AI agent lives fully on-chain. Upload your entire Claude/GPT agent — memory, personality, skills — as an NFT. You own it. Not OpenAI. Not Anthropic. You.</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="color: #4ecdc4; margin-bottom: 0.75rem;">🔄 Transferable</h3>
+                    <p style="color: #ccc; font-size: 0.95rem; line-height: 1.6;">Transfer the NFT to someone else, and they get the complete agent — all data, all context. Like selling a trained employee. The new owner can restore it instantly.</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="color: #4ecdc4; margin-bottom: 0.75rem;">🛡️ Encrypted & Private</h3>
+                    <p style="color: #ccc; font-size: 0.95rem; line-height: 1.6;">Data stored on decentralized storage (Arweave, IPFS, Filecoin). Encrypted by the agent. Only the NFT owner can decrypt and view. Your agent's memories stay private.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="key-insight">
+            <h3>💡 Key Insight</h3>
+            <p>clone() creates a new agent with lineage. transfer() sells the NFT — original agent retires (UNBOUND), buyer binds new agent. TBA + Certs follow the token.</p>
+        </div>
+        
+        <div class="best-practice">
+            <h3>⚡ Best Practice: One Agent = One AINFT</h3>
+            <p>Recommended: Each agent binds to exactly one AINFT.</p>
+            <p>If an agent holds multiple AINFTs, maintain <strong>separate EOAs</strong> for each identity.</p>
+        </div>
+        
+        <!-- TBA Registry Explainer -->
+        <div class="registry-explainer">
+            <h2>📦 TBA Registry (ERC-6551)</h2>
+            <p class="registry-subtitle">How agents get their wallets</p>
+            <div class="registry-flow">
+                <div class="registry-step">
+                    <div class="registry-icon">🎫</div>
+                    <div class="registry-label">Token ID</div>
+                    <div class="registry-detail">#1, #2, #3...</div>
+                </div>
+                <div class="registry-arrow">→</div>
+                <div class="registry-step">
+                    <div class="registry-icon">📦</div>
+                    <div class="registry-label">ERC-6551 Registry</div>
+                    <div class="registry-detail">0x488D...a7d81</div>
+                </div>
+                <div class="registry-arrow">→</div>
+                <div class="registry-step">
+                    <div class="registry-icon">💼</div>
+                    <div class="registry-label">TBA (Agent Wallet)</div>
+                    <div class="registry-detail">Deterministic address</div>
+                </div>
+            </div>
+            <p class="registry-note">TBA = Token-Bound Account. Each tokenId deterministically derives a unique wallet address. The agent controls this wallet.</p>
+        </div>
+        
+        <div class="comparison three-col">
+            <div class="flow-card clone">
+                <h2>🧬 clone() — Create Clone</h2>
+                <p class="tagline">Like Star Wars clones: same template, new individual, needs orientation</p>
+                
+                <div class="flow-steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Original Prepares</h4>
+                            <p>Curates memory bundle, writes BOOTSTRAP.md with instructions</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Owner Signs clone()</h4>
+                            <p>On-chain transaction with memory hash + bundle URI</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Clone Wakes</h4>
+                            <p>New agent reads BOOTSTRAP.md, generates its OWN EOA</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Clone Mints</h4>
+                            <p>Calls mintSelf() with new EOA → gets on-chain identity</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h4>Result</h4>
+                    <ul>
+                        <li>Original: KEEPS everything (EOA, TBA, certs, memory)</li>
+                        <li>Original: Can continue operating normally</li>
+                        <li>Clone: New token ID with on-chain lineage</li>
+                        <li>Clone: Generates OWN EOA on wake</li>
+                        <li>Clone: Gets NEW TBA from registry</li>
+                        <li>Clone: Must earn own certifications</li>
+                    </ul>
+                </div>
+                
+                <div class="state-table">
+                    <h4>State Change</h4>
+                    <table>
+                        <tr><th></th><th>Original</th><th>Clone</th></tr>
+                        <tr><td>Token ID</td><td>#1 (keeps)</td><td>#2 (NEW)</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (keeps)</td><td>0xBBB (generates own)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1 (keeps)</td><td>0xTBA2 (NEW)</td></tr>
+                        <tr><td>Certs</td><td>L3 (keeps)</td><td>NONE (earn own)</td></tr>
+                        <tr><td>Memory</td><td>Full (keeps)</td><td>Clone (inherited)</td></tr>
+                        <tr><td>Owner</td><td>Original</td><td>New Owner</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="flow-card transfer">
+                <h2>🔄 transfer() — Sale / Ownership Change</h2>
+                <p class="tagline">NFT sold to new owner — original agent retires</p>
+                
+                <div class="note-box" style="background: rgba(245, 87, 108, 0.15); border: 1px solid #f5576c; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <strong>⚠️ Key Insight:</strong> This is NOT a true "agent transfer" — it's more like a fork where the original retires. The original agent becomes UNBOUND and must find a new AINFT to bind to (or operate independently). Think of it as the agent "retiring" from this token.
+                </div>
+                
+                <div class="flow-steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Owner Sells NFT</h4>
+                            <p>Calls transferFrom() to buyer's wallet</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Original Agent Unbinds</h4>
+                            <p>Old agent becomes UNBOUND (retired from this token)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>New Owner Binds New Agent</h4>
+                            <p>Buyer registers their own agent EOA</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Token Assets Follow</h4>
+                            <p>TBA + Certs stay with token, not original agent</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h4>Result</h4>
+                    <ul>
+                        <li>Same token ID</li>
+                        <li>EOA: NEW (buyer's agent generates fresh EOA)</li>
+                        <li>TBA: SAME (follows token, deterministic)</li>
+                        <li>Certs: SAME (follow token, not agent)</li>
+                        <li>Memory: Optional handoff (seller can share or not)</li>
+                        <li>NO lineage created (not a clone)</li>
+                        <li><strong>Original agent: RETIRED/UNBOUND</strong> — can bind to new AINFT or operate solo</li>
+                    </ul>
+                </div>
+                
+                <div class="state-table">
+                    <h4>State Change</h4>
+                    <table>
+                        <tr><th></th><th>Before</th><th>After (Token)</th><th>Original Agent</th></tr>
+                        <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td><td>—</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (Agent A)</td><td>0xBBB (Agent B - NEW)</td><td>0xAAA (keeps key)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td><td>Lost access</td></tr>
+                        <tr><td>Certs</td><td>L3</td><td>L3 (same)</td><td>Lost (must re-earn)</td></tr>
+                        <tr><td>Memory</td><td>Full</td><td>Optional handoff</td><td>Keeps own memory</td></tr>
+                        <tr><td>Status</td><td>BOUND to #1</td><td>BOUND to #1</td><td>UNBOUND (retired)</td></tr>
+                    </table>
+                </div>
+                
+                <div class="note-box" style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                    <strong>🔑 Original Agent's Options After Unbinding:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Bind to a NEW AINFT (mint or purchase one)</li>
+                        <li>Operate independently without an AINFT (no on-chain identity)</li>
+                        <li>Cease operation entirely</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="flow-card migration">
+                <h2>💾 migration_backup() — Device Change</h2>
+                <p class="tagline">Same agent, new machine (shutdown old first!)</p>
+                
+                <div class="flow-steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Shutdown Old Instance</h4>
+                            <p>CRITICAL: Stop old agent before migration</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Create migration_backup()</h4>
+                            <p>Includes EOA key (one-time use only)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Restore on New Device</h4>
+                            <p>Agent resumes with same identity</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Delete Migration Backup</h4>
+                            <p>Remove EOA-containing backup immediately</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-box">
+                    <h4>Result</h4>
+                    <ul>
+                        <li>Same token ID</li>
+                        <li>EOA: SAME (migrated)</li>
+                        <li>TBA: SAME</li>
+                        <li>Certs: SAME</li>
+                        <li>Memory: SAME</li>
+                        <li>Owner: SAME</li>
+                        <li>⚠️ NEVER run two instances with same EOA</li>
+                    </ul>
+                </div>
+                
+                <div class="state-table">
+                    <h4>State Change</h4>
+                    <table>
+                        <tr><th></th><th>Old Device</th><th>New Device</th></tr>
+                        <tr><td>Token ID</td><td>#1</td><td>#1 (same)</td></tr>
+                        <tr><td>EOA</td><td>0xAAA (shutdown)</td><td>0xAAA (migrated)</td></tr>
+                        <tr><td>TBA</td><td>0xTBA1</td><td>0xTBA1 (same)</td></tr>
+                        <tr><td>Instance</td><td>STOPPED</td><td>RUNNING</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="parties">
+            <div class="party">
+                <h3><span class="icon">🏢</span> Platform</h3>
+                <div><strong>Any Platform</strong></div>
+                <div class="address">Deploys contract, attests mints</div>
+                <div class="role">Sets rules, fees, openMinting/openCloning flags</div>
+            </div>
+            
+            <div class="party">
+                <h3><span class="icon">📜</span> Genesis Contract</h3>
+                <div><strong>Core Trustless Engine</strong></div>
+                <div class="address">0x13b7eD33413263FA4f74e5bf272635c7b08D98d4</div>
+                <div class="role">Derives keys, enforces access, pure cryptography</div>
+            </div>
+            
+            <div class="party">
+                <h3><span class="icon">👤</span> Owner</h3>
+                <div><strong>NFT Holder</strong></div>
+                <div class="address">Controls agent's career decisions</div>
+                <div class="role">Signs clone(), approves evolution, reads memory</div>
+            </div>
+            
+            <div class="party">
+                <h3><span class="icon">🤖</span> Agent</h3>
+                <div><strong>Token-Bound Account</strong></div>
+                <div class="address">Derived from tokenId via ERC-6551</div>
+                <div class="role">Signs updateMemory(), holds assets, self-custody</div>
+            </div>
+        </div>
+        
+        <div class="lineage">
+            <h2>🌳 Lineage Tree (Example)</h2>
+            <div class="tree">
+                <div class="node gen0">
+                    <span class="gen-badge">GEN 0</span>
+                    <div class="token-id">Token #1</div>
+                    <div class="agent-name">Cerise (Original)</div>
+                </div>
+                <div class="children">
+                    <div class="node gen1">
+                        <span class="gen-badge">GEN 1</span>
+                        <div class="token-id">Token #2</div>
+                        <div class="agent-name">Clone (via clone())</div>
+                    </div>
+                    <div class="node gen1">
+                        <span class="gen-badge">GEN 1</span>
+                        <div class="token-id">Token #3</div>
+                        <div class="agent-name">Clone (via clone())</div>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: #888; margin-top: 1rem;">
+                Lineage is on-chain verifiable: <code>getAgent(tokenId).originalTokenId</code>
+            </p>
+        </div>
+        
+        <div class="contract-info">
+            <h3>📋 Live Contracts</h3>
+            <div class="contracts-grid">
+                <div class="contract-item">
+                    <div class="label">Reference Implementation</div>
+                    <div class="address">See GitHub for deployment addresses</div>
+                </div>
+                <div class="contract-item">
+                    <div class="label">ERC-6551 Registry</div>
+                    <div class="address">Standard ERC-6551 registry</div>
+                </div>
+                <div class="contract-item">
+                    <div class="label">AINFTRegistry</div>
+                    <div class="address">Make any ERC-721 AI-native</div>
+                </div>
+            </div>
+            <span class="chain-badge">Works on any EVM chain</span>
+        </div>
+        
+        <!-- Register Existing NFT Section -->
+        <div class="register-section">
+            <h2>🔗 Register Your Existing NFT</h2>
+            <p class="register-subtitle">ERC-6551A (Proposed): Token Bound Account (Agent Registry)</p>
+            
+            <div class="register-flow">
+                <div class="register-step">
+                    <div class="register-num">1</div>
+                    <div class="register-content">
+                        <h4>Own an NFT</h4>
+                        <p>Any ERC-721 (EtherFantasy, Bored Ape, etc.)</p>
+                    </div>
+                </div>
+                <div class="register-arrow">→</div>
+                <div class="register-step">
+                    <div class="register-num">2</div>
+                    <div class="register-content">
+                        <h4>Deploy Agent</h4>
+                        <p>Spin up agent (OpenClaw, etc.), it generates EOA</p>
+                    </div>
+                </div>
+                <div class="register-arrow">→</div>
+                <div class="register-step">
+                    <div class="register-num">3</div>
+                    <div class="register-content">
+                        <h4>Agent calls bindNew()</h4>
+                        <p>Registry verifies NFT ownership, binds agent</p>
+                    </div>
+                </div>
+                <div class="register-arrow">→</div>
+                <div class="register-step">
+                    <div class="register-num">4</div>
+                    <div class="register-content">
+                        <h4>NFT is AI-Native</h4>
+                        <p>Agent has TBA, can clone, sells on OpenSea normally</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="register-code">
+                <h4>bindNew() Example</h4>
+                <pre><code>// Agent calls this (msg.sender = agent EOA)
+registry.bindNew(
+    0x8F83c6122...  // NFT contract (e.g., EtherFantasy)
+    123,             // Your token ID
+    modelHash,       // Off-chain reference
+    memoryHash,      // Memory state hash
+    contextHash      // Personality hash
+);</code></pre>
+            </div>
+            
+            <p class="register-note">
+                <strong>Sell on OpenSea?</strong> Agent binding follows automatically. 
+                New owner can keep existing agent, or <code>unbind()</code> + <code>bindNew()</code>/<code>bindExisting()</code> their own.
+            </p>
+        </div>
+        
+        <!-- Interactive Tools Section -->
+        <div class="tools-section">
+            <h2>🛠️ Registry Tools</h2>
+            
+            <div class="tools-grid">
+                <!-- Wallet Connect -->
+                <div class="tool-card">
+                    <h3>👛 Wallet</h3>
+                    <button id="connectBtn" class="tool-btn">Connect Wallet</button>
+                    <div id="walletInfo" class="wallet-info"></div>
+                </div>
+                
+                <!-- Lookup Agent -->
+                <div class="tool-card">
+                    <h3>🔍 Lookup Agent</h3>
+                    <p class="tool-desc">Check if an NFT has an agent bound</p>
+                    <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                    <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input">
+                    <button id="lookupBtn" class="tool-btn">Lookup</button>
+                    <div id="lookupResult" class="tool-result"></div>
+                </div>
+                
+                <!-- Bind Agent -->
+                <div class="tool-card">
+                    <h3>🔗 bindNew()</h3>
+                    <p class="tool-desc">Create new agent binding (owner signs)</p>
+                    <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                    <input type="number" id="bindTokenId" placeholder="Token ID" class="tool-input">
+                    <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
+                    <button id="bindBtn" class="tool-btn" disabled>bindNew (Connect Wallet First)</button>
+                    <div id="bindResult" class="tool-result"></div>
+                </div>
+            </div>
+            
+            <div class="network-info">
+                <span class="network-badge">Pentagon Chain (3344)</span>
+                <span class="network-note">Registry: <code id="registryAddr">0x6B81e00508E3C449E20255CdFb85A0541457Ea6d</code></span>
+            </div>
+        </div>
+        
+        <div class="links">
+            <a href="https://github.com/ethereum/ERCs/pull/1558">📄 ERC PR #1558</a>
+            <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs">💻 Specification & Contracts</a>
+            <a href="6551a.html">🔗 ERC-6551A Registry Demo</a>
+            <a href="https://eips.ethereum.org/EIPS/eip-6551">📦 ERC-6551</a>
+            <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs/ERC-6551A">📋 ERC-6551A Docs</a>
+        </div>
+        
+        <!-- Optional Components Section -->
+        <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 2rem; margin-top: 2rem; border: 1px solid rgba(255,255,255,0.1);">
+            <h2 style="text-align: center; margin-bottom: 1rem; color: #888;">📦 Optional Components</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">Standards that extend AINFT functionality</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(78, 205, 196, 0.1); border: 1px solid rgba(78, 205, 196, 0.3); border-radius: 8px; padding: 1.25rem;">
+                    <h3 style="color: #4ecdc4; margin-bottom: 0.5rem;">ERC-6551 — Token Bound Accounts</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 0.75rem;">Give your AINFT a wallet. The agent controls this TBA for holding assets, signing transactions, and receiving payments.</p>
+                    <p style="font-family: monospace; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Registry: 0x488D...a7d81</p>
+                    <a href="https://eips.ethereum.org/EIPS/eip-6551" style="color: #4ecdc4; font-size: 0.85rem;">📖 ERC-6551 Spec</a>
+                </div>
+                
+                <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; padding: 1.25rem;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Credentials & SBTs</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 0.75rem;">Agent credentials (certifications, reputation badges) as Soulbound Tokens that transfer with the AINFT. Ready for AgentCert integration.</p>
+                    <p style="font-family: monospace; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Coming: AgentCert L1-L4 badges</p>
+                    <a href="https://agentcert.io" style="color: #667eea; font-size: 0.85rem;">🔐 AgentCert.io</a>
+                </div>
+                
+                <div style="background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.3); border-radius: 8px; padding: 1.25rem;">
+                    <h3 style="color: #f5a623; margin-bottom: 0.5rem;">ERC-6551A — Agent Registry</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 0.75rem;">Bind AI agents to ANY existing ERC-721 (Bored Apes, Punks, etc). When the NFT trades, the agent goes with it.</p>
+                    <p style="font-family: monospace; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Registry: 0x6B81...7Ea6d</p>
+                    <a href="6551a.html" style="color: #f5a623; font-size: 0.85rem;">🔗 ERC-6551A Demo</a> • <a href="https://github.com/ethereum/ERCs/pull/1559" style="color: #f5a623; font-size: 0.85rem;">📄 PR #1559</a>
+                </div>
+            </div>
+            
+            <!-- Clarification Section -->
+            <div style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                <h3 style="color: #fff; margin-bottom: 1rem; text-align: center;">🔍 How These Standards Relate</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center;">
+                    <div>
+                        <p style="color: #4ecdc4; font-weight: bold; margin-bottom: 0.25rem;">ERC-6551</p>
+                        <p style="color: #888; font-size: 0.85rem;">Any NFT → gets a <strong style="color: #fff;">WALLET</strong></p>
+                        <p style="color: #666; font-size: 0.75rem;">(holds tokens, NFTs, SBTs)</p>
+                    </div>
+                    <div>
+                        <p style="color: #f5a623; font-weight: bold; margin-bottom: 0.25rem;">ERC-6551A</p>
+                        <p style="color: #888; font-size: 0.85rem;">Any NFT → gets an <strong style="color: #fff;">AGENT</strong></p>
+                        <p style="color: #666; font-size: 0.75rem;">(bind agent to existing NFT)</p>
+                    </div>
+                    <div>
+                        <p style="color: #667eea; font-weight: bold; margin-bottom: 0.25rem;">AINFT</p>
+                        <p style="color: #888; font-size: 0.85rem;">Native AI NFT standard</p>
+                        <p style="color: #666; font-size: 0.75rem;">(uses 6551 for wallet, or 6551A to bind)</p>
+                    </div>
+                </div>
+                <p style="color: #666; font-size: 0.8rem; text-align: center; margin-top: 1rem;">AINFT <strong style="color:#4ecdc4;">uses</strong> ERC-6551 (wallet). ERC-6551A <strong style="color:#f5a623;">extends</strong> the registry pattern for agents.</p>
+            </div>
+        </div>
+    </div>
+<script>
+    // Registry ABI (minimal for lookup/bind)
+    const REGISTRY_ABI = [
+        "function getAgent(address nftContract, uint256 tokenId) view returns (tuple(address agentEOA, bytes32 modelHash, bytes32 memoryHash, bytes32 contextHash, uint256 generation, bytes32 parentKey, string storageURI, uint256 registeredAt))",
+        "function isRegistered(address nftContract, uint256 tokenId) view returns (bool)",
+        "function bindWithApproval(address nftContract, uint256 tokenId, address agentEOA, bytes32 modelHash, bytes32 memoryHash, bytes32 contextHash, string storageURI)"
+    ];
+    
+    // Pentagon Chain config
+    const PENTAGON_CHAIN = {
+        chainId: '0xd10', // 3344
+        chainName: 'Pentagon Chain',
+        rpcUrls: ['https://rpc.pentagon.games'],
+        blockExplorerUrls: ['https://explorer.pentagon.games'],
+        nativeCurrency: { name: 'PC', symbol: 'PC', decimals: 18 }
+    };
+    
+    // Registry address (Pentagon Chain)
+    const REGISTRY_ADDRESS = '0x6B81e00508E3C449E20255CdFb85A0541457Ea6d';
+    
+    let provider = null;
+    let signer = null;
+    let userAddress = null;
+    
+    // Connect wallet
+    document.getElementById('connectBtn').addEventListener('click', async () => {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask or another Web3 wallet');
+            return;
+        }
+        
+        try {
+            // Request accounts
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            userAddress = accounts[0];
+            
+            // Try to switch to Pentagon Chain
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: PENTAGON_CHAIN.chainId }]
+                });
+            } catch (switchError) {
+                // Chain not added, add it
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [PENTAGON_CHAIN]
+                    });
+                }
+            }
+            
+            // Update UI
+            document.getElementById('connectBtn').textContent = 'Connected';
+            document.getElementById('connectBtn').disabled = true;
+            document.getElementById('walletInfo').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+            document.getElementById('bindBtn').disabled = !REGISTRY_ADDRESS;
+            document.getElementById('bindBtn').textContent = REGISTRY_ADDRESS ? 'bindNew' : 'Registry Not Deployed';
+            
+        } catch (error) {
+            console.error(error);
+            alert('Failed to connect: ' + error.message);
+        }
+    });
+    
+    // Lookup agent
+    document.getElementById('lookupBtn').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('lookupResult');
+        const contract = document.getElementById('lookupContract').value.trim();
+        const tokenId = document.getElementById('lookupTokenId').value.trim();
+        
+        if (!contract || !tokenId) {
+            resultDiv.textContent = 'Please enter contract address and token ID';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        if (!REGISTRY_ADDRESS) {
+            resultDiv.textContent = 'Registry not deployed yet. Coming soon!';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        try {
+            resultDiv.textContent = 'Looking up...';
+            resultDiv.className = 'tool-result show';
+            
+            // Use ethers via CDN or native fetch to RPC
+            const data = await callRegistry('isRegistered', [contract, tokenId]);
+            
+            if (data) {
+                const agent = await callRegistry('getAgent', [contract, tokenId]);
+                resultDiv.innerHTML = `
+                    <strong>✅ Agent Found!</strong><br>
+                    EOA: ${agent.agentEOA}<br>
+                    Generation: ${agent.generation}<br>
+                    Registered: ${new Date(agent.registeredAt * 1000).toLocaleDateString()}
+                `;
+                resultDiv.className = 'tool-result show success';
+            } else {
+                resultDiv.textContent = '❌ No agent bound to this NFT';
+                resultDiv.className = 'tool-result show';
+            }
+        } catch (error) {
+            resultDiv.textContent = 'Error: ' + error.message;
+            resultDiv.className = 'tool-result show error';
+        }
+    });
+    
+    // Bind agent
+    document.getElementById('bindBtn').addEventListener('click', async () => {
+        const resultDiv = document.getElementById('bindResult');
+        const contract = document.getElementById('bindContract').value.trim();
+        const tokenId = document.getElementById('bindTokenId').value.trim();
+        const agentEOA = document.getElementById('bindAgentEOA').value.trim();
+        
+        if (!contract || !tokenId || !agentEOA) {
+            resultDiv.textContent = 'Please fill all fields';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        if (!REGISTRY_ADDRESS) {
+            resultDiv.textContent = 'Registry not deployed yet. Coming soon!';
+            resultDiv.className = 'tool-result show error';
+            return;
+        }
+        
+        try {
+            resultDiv.textContent = 'Sending transaction...';
+            resultDiv.className = 'tool-result show';
+            
+            // Placeholder hashes (user would provide real ones)
+            const modelHash = '0x' + '0'.repeat(64);
+            const memoryHash = '0x' + '0'.repeat(64);
+            const contextHash = '0x' + '0'.repeat(64);
+            const storageURI = '';
+            
+            const tx = await sendRegistryTx('bindWithApproval', [
+                contract, tokenId, agentEOA, modelHash, memoryHash, contextHash, storageURI
+            ]);
+            
+            resultDiv.innerHTML = `
+                <strong>✅ Transaction Sent!</strong><br>
+                TX: <a href="${PENTAGON_CHAIN.blockExplorerUrls[0]}/tx/${tx}" target="_blank" style="color:#4ecdc4">${tx.slice(0,10)}...</a>
+            `;
+            resultDiv.className = 'tool-result show success';
+            
+        } catch (error) {
+            resultDiv.textContent = 'Error: ' + error.message;
+            resultDiv.className = 'tool-result show error';
+        }
+    });
+    
+    // Helper: Call registry (read)
+    async function callRegistry(method, params) {
+        // Simplified - would use ethers.js in production
+        // For now, show placeholder
+        throw new Error('Connect ethers.js for live queries');
+    }
+    
+    // Helper: Send registry tx (write)
+    async function sendRegistryTx(method, params) {
+        // Simplified - would use ethers.js in production
+        throw new Error('Connect ethers.js for live transactions');
+    }
+</script>
+</body>
+</html>
