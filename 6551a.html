@@ -16,9 +16,37 @@
         .container { max-width: 1000px; margin: 0 auto; }
         h1 { text-align: center; margin-bottom: 0.5rem; font-size: 2.2rem; }
         .subtitle { text-align: center; color: #888; margin-bottom: 0.5rem; }
-        .pr-link { text-align: center; margin-bottom: 2rem; }
+        .pr-link { text-align: center; margin-bottom: 1.5rem; }
         .pr-link a { color: #667eea; text-decoration: none; font-size: 1rem; margin: 0 0.5rem; }
         .pr-link a:hover { text-decoration: underline; }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            background: #667eea;
+            color: #1a1a2e;
+        }
+        .tab:not(.active) {
+            background: rgba(255,255,255,0.1);
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .tab:not(.active):hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
         
         .hero {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
@@ -228,7 +256,12 @@
         <div class="pr-link">
             <a href="https://github.com/ethereum/ERCs/pull/1559">📄 PR #1559</a>
             <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs/ERC-6551A">💻 Specification</a>
-            <a href="index.html">← ERC-AINFT (Standalone)</a>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <a href="index.html" class="tab">ANIMA (ERC-XXXX)</a>
+            <a href="6551a.html" class="tab active">ERC-6551A Registry</a>
         </div>
         
         <!-- Why ERC-6551A Section -->

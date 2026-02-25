@@ -19,9 +19,37 @@
         h1 { text-align: center; margin-bottom: 0.5rem; font-size: 3rem; letter-spacing: 0.1em; }
         h1 span { color: #4ecdc4; }
         .tagline { text-align: center; color: #aaa; margin-bottom: 0.5rem; font-size: 1.3rem; }
-        .links { text-align: center; margin-bottom: 3rem; }
+        .links { text-align: center; margin-bottom: 1.5rem; }
         .links a { color: #4ecdc4; text-decoration: none; margin: 0 1rem; }
         .links a:hover { text-decoration: underline; }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            background: #4ecdc4;
+            color: #1a1a2e;
+        }
+        .tab:not(.active) {
+            background: rgba(255,255,255,0.1);
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .tab:not(.active):hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
         
         /* Feature Grid */
         .features {
@@ -197,8 +225,14 @@
         <p class="tagline">The soul of your agent, on-chain</p>
         <div class="links">
             <a href="https://github.com/ethereum/ERCs/pull/1558">ERC Proposal</a>
-            <a href="https://github.com/blockchainsuperheroes/ERC-ANIMA">GitHub</a>
+            <a href="https://github.com/blockchainsuperheroes/Pentagon-AI/tree/main/EIPs">GitHub</a>
             <a href="https://pentagon.games">Pentagon Chain</a>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <a href="index.html" class="tab active">ANIMA (ERC-XXXX)</a>
+            <a href="6551a.html" class="tab">ERC-6551A Registry</a>
         </div>
         
         <!-- Core Features -->
