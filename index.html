@@ -550,9 +550,13 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                 resultDiv.textContent = 'Looking up...';
                 resultDiv.className = 'tool-result show';
                 
-                // Use read-only provider if wallet not connected
-                const readProvider = provider || new ethers.JsonRpcProvider(PENTAGON_CHAIN.rpcUrls[0]);
-                const readRegistry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, readProvider);
+                // Need wallet connected for RPC access (CORS blocks direct browser calls)
+                if (!provider) {
+                    resultDiv.textContent = '⚠️ Connect wallet first to query Pentagon Chain';
+                    resultDiv.className = 'tool-result show error';
+                    return;
+                }
+                const readRegistry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, provider);
                 
                 const isReg = await readRegistry.isRegistered(contract, tokenId);
                 if (isReg) {
