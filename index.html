@@ -415,15 +415,20 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                 <p style="text-align: center; color: #aaa; margin-bottom: 0.5rem;">Connect your wallet to bind/unbind agents. <a href="https://etherfantasy.com" style="color: #4ecdc4;">Mint a test NFT at EtherFantasy.com</a></p>
                 <p style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 1.5rem;">These are real on-chain transactions on Pentagon Chain (3344)</p>
                 
+                <div style="background: rgba(245, 166, 35, 0.15); border: 1px solid #f5a623; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
+                    <strong style="color: #f5a623;">⚠️ Step 1: Connect Wallet First</strong>
+                    <p style="color: #aaa; font-size: 0.85rem; margin-top: 0.25rem;">All tools require wallet connection (Pentagon Chain RPC doesn't support browser CORS)</p>
+                </div>
+                
                 <div class="tools-grid">
-                    <div class="tool-card">
-                        <h3>👛 Connect Wallet</h3>
-                        <p class="tool-desc">Connects to Pentagon Chain. You need PC gas for transactions.</p>
-                        <button id="connectBtn" class="tool-btn">Connect MetaMask</button>
+                    <div class="tool-card" style="border: 2px solid #f5a623;">
+                        <h3>👛 Step 1: Connect Wallet</h3>
+                        <p class="tool-desc">Required for all tools below. Connects to Pentagon Chain (3344).</p>
+                        <button id="connectBtn" class="tool-btn" style="background: #f5a623;">Connect MetaMask</button>
                         <div id="walletInfo" class="wallet-info"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔍 Lookup Agent</h3>
+                        <h3>🔍 Step 2: Lookup Agent</h3>
                         <p class="tool-desc">Check if an NFT has an agent bound</p>
                         <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input" value="0x4e8D3B9Be7Ef241Fb208364ed511E92D6E2A172d">
                         <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input" value="1">
@@ -432,7 +437,7 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                         <div id="lookupResult" class="tool-result"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔗 Bind Agent</h3>
+                        <h3>🔗 Step 3: Bind Agent</h3>
                         <p class="tool-desc">Your connected wallet becomes the agent EOA. <strong>Must own the NFT!</strong></p>
                         <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
                         <input type="number" id="bindTokenId" placeholder="Token ID you own" class="tool-input">
@@ -441,7 +446,7 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                         <div id="bindResult" class="tool-result"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔓 Unbind Agent</h3>
+                        <h3>🔓 Step 4: Unbind Agent</h3>
                         <p class="tool-desc">Remove agent binding from your NFT. <strong>Must own the NFT!</strong></p>
                         <input type="text" id="unbindContract" placeholder="NFT Contract (0x...)" class="tool-input">
                         <input type="number" id="unbindTokenId" placeholder="Token ID you own" class="tool-input">
@@ -552,7 +557,7 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                 
                 // Need wallet connected for RPC access (CORS blocks direct browser calls)
                 if (!provider) {
-                    resultDiv.textContent = '⚠️ Connect wallet first to query Pentagon Chain';
+                    resultDiv.innerHTML = '⚠️ <strong>Connect wallet first!</strong> (Step 1 above)';
                     resultDiv.className = 'tool-result show error';
                     return;
                 }
