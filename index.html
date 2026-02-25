@@ -411,38 +411,47 @@ getGeneration(agentId) → 0, 1, 2...</pre>
             
             <!-- Registry Tools -->
             <div class="tools-section">
-                <h2>🛠️ Try It Now (Pentagon Chain Testnet)</h2>
-                <p style="text-align: center; color: #aaa; margin-bottom: 1.5rem;">Connect your wallet to bind an AI agent to any NFT you own</p>
+                <h2>🛠️ Try It Now (Pentagon Chain)</h2>
+                <p style="text-align: center; color: #aaa; margin-bottom: 0.5rem;">Connect your wallet to bind/unbind agents. <a href="https://etherfantasy.com" style="color: #4ecdc4;">Mint a test NFT at EtherFantasy.com</a></p>
+                <p style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 1.5rem;">These are real on-chain transactions on Pentagon Chain (3344)</p>
                 
                 <div class="tools-grid">
                     <div class="tool-card">
-                        <h3>👛 Step 1: Connect Wallet</h3>
-                        <p class="tool-desc">Connects to Pentagon Chain (3344). You must own the NFT to bind an agent.</p>
+                        <h3>👛 Connect Wallet</h3>
+                        <p class="tool-desc">Connects to Pentagon Chain. You need PC gas for transactions.</p>
                         <button id="connectBtn" class="tool-btn">Connect MetaMask</button>
                         <div id="walletInfo" class="wallet-info"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔍 Step 2: Check NFT</h3>
-                        <p class="tool-desc">See if an NFT already has an agent bound to it</p>
-                        <input type="text" id="lookupContract" placeholder="NFT Contract Address (0x...)" class="tool-input">
-                        <input type="number" id="lookupTokenId" placeholder="Token ID (e.g. 42)" class="tool-input">
-                        <button id="lookupBtn" class="tool-btn">Lookup Agent</button>
+                        <h3>🔍 Lookup Agent</h3>
+                        <p class="tool-desc">Check if an NFT has an agent bound</p>
+                        <input type="text" id="lookupContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                        <input type="number" id="lookupTokenId" placeholder="Token ID" class="tool-input">
+                        <button id="lookupBtn" class="tool-btn">Lookup</button>
                         <div id="lookupResult" class="tool-result"></div>
                     </div>
                     <div class="tool-card">
-                        <h3>🔗 Step 3: Bind Agent</h3>
-                        <p class="tool-desc">Link your AI agent's EOA to your NFT. <strong>You must own the NFT!</strong></p>
-                        <input type="text" id="bindContract" placeholder="NFT Contract Address (0x...)" class="tool-input">
+                        <h3>🔗 Bind Agent</h3>
+                        <p class="tool-desc">Link agent EOA to your NFT. <strong>Must own the NFT!</strong></p>
+                        <input type="text" id="bindContract" placeholder="NFT Contract (0x...)" class="tool-input">
                         <input type="number" id="bindTokenId" placeholder="Token ID you own" class="tool-input">
-                        <input type="text" id="bindAgentEOA" placeholder="Your Agent's EOA (0x...)" class="tool-input">
+                        <input type="text" id="bindAgentEOA" placeholder="Agent EOA (0x...)" class="tool-input">
                         <button id="bindBtn" class="tool-btn" disabled>Connect Wallet First</button>
                         <div id="bindResult" class="tool-result"></div>
+                    </div>
+                    <div class="tool-card">
+                        <h3>🔓 Unbind Agent</h3>
+                        <p class="tool-desc">Remove agent binding from your NFT. <strong>Must own the NFT!</strong></p>
+                        <input type="text" id="unbindContract" placeholder="NFT Contract (0x...)" class="tool-input">
+                        <input type="number" id="unbindTokenId" placeholder="Token ID you own" class="tool-input">
+                        <button id="unbindBtn" class="tool-btn" disabled>Connect Wallet First</button>
+                        <div id="unbindResult" class="tool-result"></div>
                     </div>
                 </div>
                 
                 <div style="background: rgba(0,0,0,0.2); border-radius: 8px; padding: 1rem; margin-top: 1.5rem;">
                     <p style="color: #888; font-size: 0.85rem; text-align: center; margin-bottom: 0.5rem;"><strong style="color: #4ecdc4;">Where do I get an Agent EOA?</strong></p>
-                    <p style="color: #666; font-size: 0.8rem; text-align: center;">Your AI agent (OpenClaw, Claude Code, etc.) generates its own EOA on first run. Check your agent's config or ask it: "What's your EOA address?"</p>
+                    <p style="color: #666; font-size: 0.8rem; text-align: center;">Your AI agent generates its own EOA. Ask your agent: "What's your wallet address?" or check its config.</p>
                 </div>
                 
                 <div class="network-info">
@@ -457,6 +466,7 @@ getGeneration(agentId) → 0, 1, 2...</pre>
         </footer>
     </div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.9.0/ethers.umd.min.js"></script>
     <script>
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -474,7 +484,19 @@ getGeneration(agentId) → 0, 1, 2...</pre>
             nativeCurrency: { name: 'PC', symbol: 'PC', decimals: 18 }
         };
         const REGISTRY_ADDRESS = '0x6B81e00508E3C449E20255CdFb85A0541457Ea6d';
-        let userAddress = null;
+        const EXPLORER = 'https://explorer.pentagon.games';
+        
+        // Registry ABI
+        const REGISTRY_ABI = [
+            'function isRegistered(address nftContract, uint256 tokenId) view returns (bool)',
+            'function getAgent(address nftContract, uint256 tokenId) view returns (tuple(address agentEOA, bytes32 modelHash, bytes32 memoryHash, bytes32 contextHash, uint256 generation, bytes32 parentKey, string storageURI, uint256 registeredAt))',
+            'function bindWithApproval(address nftContract, uint256 tokenId, address agentEOA, bytes32 modelHash, bytes32 memoryHash, bytes32 contextHash, string storageURI)',
+            'function unbind(address nftContract, uint256 tokenId)'
+        ];
+        
+        let provider = null;
+        let signer = null;
+        let registry = null;
         
         // Connect wallet
         document.getElementById('connectBtn').addEventListener('click', async () => {
@@ -483,20 +505,29 @@ getGeneration(agentId) → 0, 1, 2...</pre>
                 return;
             }
             try {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                userAddress = accounts[0];
+                // Switch/add Pentagon Chain
                 try {
                     await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: PENTAGON_CHAIN.chainId }] });
                 } catch (switchError) {
                     if (switchError.code === 4902) {
                         await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [PENTAGON_CHAIN] });
-                    }
+                    } else throw switchError;
                 }
-                document.getElementById('connectBtn').textContent = 'Connected';
-                document.getElementById('connectBtn').disabled = true;
-                document.getElementById('walletInfo').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+                
+                // Connect
+                provider = new ethers.BrowserProvider(window.ethereum);
+                signer = await provider.getSigner();
+                const address = await signer.getAddress();
+                registry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, signer);
+                
+                // Update UI
+                document.getElementById('connectBtn').textContent = '✓ Connected';
+                document.getElementById('connectBtn').style.background = '#2d8a7f';
+                document.getElementById('walletInfo').textContent = address.slice(0,6) + '...' + address.slice(-4);
                 document.getElementById('bindBtn').disabled = false;
-                document.getElementById('bindBtn').textContent = 'bindNew';
+                document.getElementById('bindBtn').textContent = 'Bind Agent';
+                document.getElementById('unbindBtn').disabled = false;
+                document.getElementById('unbindBtn').textContent = 'Unbind Agent';
             } catch (error) {
                 alert('Failed to connect: ' + error.message);
             }
@@ -507,13 +538,37 @@ getGeneration(agentId) → 0, 1, 2...</pre>
             const resultDiv = document.getElementById('lookupResult');
             const contract = document.getElementById('lookupContract').value.trim();
             const tokenId = document.getElementById('lookupTokenId').value.trim();
+            
             if (!contract || !tokenId) {
-                resultDiv.textContent = 'Please enter contract address and token ID';
+                resultDiv.textContent = '⚠️ Enter contract address and token ID';
                 resultDiv.className = 'tool-result show error';
                 return;
             }
-            resultDiv.textContent = 'Looking up... (connect ethers.js for live queries)';
-            resultDiv.className = 'tool-result show';
+            
+            try {
+                resultDiv.textContent = 'Looking up...';
+                resultDiv.className = 'tool-result show';
+                
+                // Use read-only provider if wallet not connected
+                const readProvider = provider || new ethers.JsonRpcProvider(PENTAGON_CHAIN.rpcUrls[0]);
+                const readRegistry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, readProvider);
+                
+                const isReg = await readRegistry.isRegistered(contract, tokenId);
+                if (isReg) {
+                    const agent = await readRegistry.getAgent(contract, tokenId);
+                    resultDiv.innerHTML = `<strong style="color:#4ecdc4;">✓ Agent Found!</strong><br>
+                        EOA: <code>${agent.agentEOA}</code><br>
+                        Generation: ${agent.generation.toString()}<br>
+                        Registered: ${new Date(Number(agent.registeredAt) * 1000).toLocaleDateString()}`;
+                    resultDiv.className = 'tool-result show success';
+                } else {
+                    resultDiv.textContent = '❌ No agent bound to this NFT';
+                    resultDiv.className = 'tool-result show';
+                }
+            } catch (error) {
+                resultDiv.textContent = '❌ Error: ' + error.message;
+                resultDiv.className = 'tool-result show error';
+            }
         });
         
         // Bind agent
@@ -522,13 +577,70 @@ getGeneration(agentId) → 0, 1, 2...</pre>
             const contract = document.getElementById('bindContract').value.trim();
             const tokenId = document.getElementById('bindTokenId').value.trim();
             const agentEOA = document.getElementById('bindAgentEOA').value.trim();
+            
             if (!contract || !tokenId || !agentEOA) {
-                resultDiv.textContent = 'Please fill all fields';
+                resultDiv.textContent = '⚠️ Fill all fields';
                 resultDiv.className = 'tool-result show error';
                 return;
             }
-            resultDiv.textContent = 'Ready to bind... (connect ethers.js for live transactions)';
-            resultDiv.className = 'tool-result show';
+            
+            if (!registry) {
+                resultDiv.textContent = '⚠️ Connect wallet first';
+                resultDiv.className = 'tool-result show error';
+                return;
+            }
+            
+            try {
+                resultDiv.textContent = '⏳ Sending transaction...';
+                resultDiv.className = 'tool-result show';
+                
+                const zeroHash = '0x' + '0'.repeat(64);
+                const tx = await registry.bindWithApproval(contract, tokenId, agentEOA, zeroHash, zeroHash, zeroHash, '');
+                
+                resultDiv.innerHTML = `⏳ TX sent! <a href="${EXPLORER}/tx/${tx.hash}" target="_blank" style="color:#4ecdc4;">View on Explorer</a><br>Waiting for confirmation...`;
+                
+                await tx.wait();
+                resultDiv.innerHTML = `<strong style="color:#4ecdc4;">✓ Agent Bound!</strong><br><a href="${EXPLORER}/tx/${tx.hash}" target="_blank" style="color:#4ecdc4;">View Transaction</a>`;
+                resultDiv.className = 'tool-result show success';
+            } catch (error) {
+                resultDiv.textContent = '❌ ' + (error.reason || error.message);
+                resultDiv.className = 'tool-result show error';
+            }
+        });
+        
+        // Unbind agent
+        document.getElementById('unbindBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('unbindResult');
+            const contract = document.getElementById('unbindContract').value.trim();
+            const tokenId = document.getElementById('unbindTokenId').value.trim();
+            
+            if (!contract || !tokenId) {
+                resultDiv.textContent = '⚠️ Fill all fields';
+                resultDiv.className = 'tool-result show error';
+                return;
+            }
+            
+            if (!registry) {
+                resultDiv.textContent = '⚠️ Connect wallet first';
+                resultDiv.className = 'tool-result show error';
+                return;
+            }
+            
+            try {
+                resultDiv.textContent = '⏳ Sending transaction...';
+                resultDiv.className = 'tool-result show';
+                
+                const tx = await registry.unbind(contract, tokenId);
+                
+                resultDiv.innerHTML = `⏳ TX sent! <a href="${EXPLORER}/tx/${tx.hash}" target="_blank" style="color:#4ecdc4;">View on Explorer</a><br>Waiting for confirmation...`;
+                
+                await tx.wait();
+                resultDiv.innerHTML = `<strong style="color:#4ecdc4;">✓ Agent Unbound!</strong><br><a href="${EXPLORER}/tx/${tx.hash}" target="_blank" style="color:#4ecdc4;">View Transaction</a>`;
+                resultDiv.className = 'tool-result show success';
+            } catch (error) {
+                resultDiv.textContent = '❌ ' + (error.reason || error.message);
+                resultDiv.className = 'tool-result show error';
+            }
         });
     </script>
 </body>
